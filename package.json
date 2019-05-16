@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "react-archer": "^1.1.0",
+    "react-progress-button": "^5.1.0"
   },
   "devDependencies": {
     "concurrently": "^4.1.0"

@@ -1,75 +1,95 @@
 import React, { Component } from 'react';
+import { ArcherContainer, ArcherElement } from 'react-archer';
+import ProgressButton from 'react-progress-button'
 
-import logo from './logo.svg';
 
-import './App.css';
+const rootStyle = { display: 'flex', justifyContent: 'center' };
+const rowStyle = { margin: '200px 0', display: 'flex', justifyContent: 'space-between', }
+const boxStyle = { padding: '10px', border: '1px solid black', };
+
+
 
 class App extends Component {
-  state = {
-    response: '',
-    post: '',
-    responseToPost: '',
-  };
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
+  constructor(props) {
+    super(props);
+    this.state = {buttonState: ''};
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
 
-    if (response.status !== 200) throw Error(body.message);
 
-    return body;
-  };
+  componentDidMount() {
 
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-    });
-    const body = await response.text();
+  }
 
-    this.setState({ responseToPost: body });
-  };
+  handleClick () {
+    console.log(this.state)
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-        <p>{this.state.response}</p>
-        <form onSubmit={this.handleSubmit}>
-          <p>
-            <strong>Post to Server:</strong>
-          </p>
-          <input
-            type="text"
-            value={this.state.post}
-            onChange={e => this.setState({ post: e.target.value })}
-          />
-          <button type="submit">Submit</button>
-        </form>
-        <p>{this.state.responseToPost}</p>
+      <div>
+
+        <ArcherContainer strokeColor='red' >
+          <div style={rootStyle}>
+            <ArcherElement
+              id="root"
+              relations={[{
+                targetId: 'element2',
+                targetAnchor: 'top',
+                sourceAnchor: 'bottom',
+              }]}
+            >
+            <div style={boxStyle}>
+              <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>
+                Go!
+              </ProgressButton>
+              <div style={boxStyle}>Element 2</div>
+            </div>
+
+            </ArcherElement>
+          </div>
+
+          <div style={rowStyle}>
+            <ArcherElement
+              id="element2"
+              relations={[{
+                targetId: 'element3',
+                targetAnchor: 'left',
+                sourceAnchor: 'right',
+                style: { strokeColor: 'blue', strokeWidth: 1 },
+                label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
+              }]}
+            >
+              <div style={boxStyle}>Element 2</div>
+            </ArcherElement>
+
+            <ArcherElement id="element3">
+              <div style={boxStyle}>Element 3</div>
+            </ArcherElement>
+
+            <ArcherElement
+              id="element4"
+              relations={[{
+                targetId: 'root',
+                targetAnchor: 'right',
+                sourceAnchor: 'left',
+                label: 'Arrow 3',
+              }]}
+            >
+              <div style={boxStyle}>Element 4</div>
+            </ArcherElement>
+          </div>
+        </ArcherContainer>
+
       </div>
     );
   }

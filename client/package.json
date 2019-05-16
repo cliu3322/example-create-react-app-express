@@ -4,7 +4,9 @@
   "license": "MIT",
   "dependencies": {
     "react": "^16.8.6",
+    "react-d3-tree": "^1.12.3",
     "react-dom": "^16.8.6",
+    "react-progress-button": "^5.1.0",
     "react-scripts": "2.0.5"
   },
   "scripts": {
