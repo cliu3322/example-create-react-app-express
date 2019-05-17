@@ -149,7 +149,7 @@ app.get('/api/BS_seek2', (req, res) => {
     //socket.emit('trim',`close: child process exited with code ${code}`)
     console.log(`child process exited with code ${code}`);
     //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
-    res.send({ express: 'Hello From Express' });
+    res.send({ express: 'Hello From BS_seek2' });
   });
 });
 
@@ -173,7 +173,7 @@ app.get('/api/BitmapperBS', (req, res) => {
     //socket.emit('trim',`close: child process exited with code ${code}`)
     console.log(`child process exited with code ${code}`);
     //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
-    res.send({ express: 'Hello From Express' });
+    res.send({ express: 'Hello From BitmapperBS' });
   });
 });
 
