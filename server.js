@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.get('/api/trim', (req, res) => {
-  const ls = spawn('trim_galore', ['--paired', '--trim1', '-o', '../../pipeline/trim', '../../pipeline/uploads/test1.fastq', '../../pipeline/uploads/test2.fastq']);
+  const ls = spawn('trim_galore', ['--paired', '--trim1', '-o', '../pipeline/trim', '../pipeline/uploads/test1.fastq', '../pipeline/uploads/test2.fastq']);
 
   ls.stdout.on('data', (data) => {
 
