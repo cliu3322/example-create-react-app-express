@@ -105,7 +105,7 @@ app.get('/api/Bismark', (req, res) => {
 
 
 app.get('/api/BWA_METH', (req, res) => {
-  const ls = spawn('bwameth.py', ['--threads', '16', '--reference', '../geno/hg38.fa', '../pipeline/trim/test1_val_1.fq', '../pipeline/trim/test2_val_2.fq','>','../pipeline/BWA-METH/bwa_test.sam']);
+  const ls = spawn('python', ['bwameth.py','--threads', '16', '--reference', '../geno/hg38.fa', '../pipeline/trim/test1_val_1.fq', '../pipeline/trim/test2_val_2.fq','>','../pipeline/BWA-METH/bwa_test.sam']);
 
   ls.stdout.on('data', (data) => {
 
