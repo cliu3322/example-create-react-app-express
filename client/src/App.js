@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import FileUploadProgress  from 'react-fileupload-progress';
 import { ArcherContainer, ArcherElement } from 'react-archer';
 import ProgressButton from 'react-progress-button'
 
 
+
 const rootStyle = { display: 'flex', justifyContent: 'center' };
-const rowStyle = { margin: '200px 0', display: 'flex', justifyContent: 'space-between', }
+const rowStyle = { margin: '100px 0', display: 'flex', justifyContent: 'space-between', }
 const boxStyle = { padding: '10px', border: '1px solid black', };
 
 
@@ -25,8 +27,141 @@ class App extends Component {
 
   }
 
-  handleClick () {
-    console.log(this.state)
+  async handleClick () {
+
+
+    const response = await fetch('/api/world', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: JSON.stringify({ post: this.state.post }),
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleTrim () {
+
+
+    const response = await fetch('/api/trim', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBismark () {
+
+
+    const response = await fetch('/api/Bismark', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBWA_METH () {
+
+
+    const response = await fetch('/api/BWA_METH', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBS_seek2 () {
+
+
+    const response = await fetch('/api/BS_seek2', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBitmapperBS () {
+
+
+    const response = await fetch('/api/BitmapperBS', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handlegemBS () {
+
+
+    const response = await fetch('/api/gemBS', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
     this.setState({buttonState: 'loading'})
     // make asynchronous call
     setTimeout(() => {
@@ -41,52 +176,133 @@ class App extends Component {
         <ArcherContainer strokeColor='red' >
           <div style={rootStyle}>
             <ArcherElement
-              id="root"
+              id="upload"
               relations={[{
-                targetId: 'element2',
+                targetId: 'trim',
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
               }]}
             >
-            <div style={boxStyle}>
-              <ProgressButton onClick={this.handleClick} state={this.state.buttonState}>
-                Go!
-              </ProgressButton>
-              <div style={boxStyle}>Element 2</div>
-            </div>
-
+              <div style={boxStyle}>upload</div>
+              <div style={boxStyle}>
+                <FileUploadProgress key='ex1' url='/api/world'
+                  onProgress={(e, request, progress) => {console.log('progress', e, request, progress);}}
+                  onLoad={ (e, request) => {console.log('load', e, request);}}
+                  onError={ (e, request) => {console.log('error', e, request);}}
+                  onAbort={ (e, request) => {console.log('abort', e, request);}}
+                  />
+                <FileUploadProgress key='ex2' url='http://localhost:3000/api/upload'
+                  onProgress={(e, request, progress) => {console.log('progress', e, request, progress);}}
+                  onLoad={ (e, request) => {console.log('load', e, request);}}
+                  onError={ (e, request) => {console.log('error', e, request);}}
+                  onAbort={ (e, request) => {console.log('abort', e, request);}}
+                  />
+              </div>
             </ArcherElement>
           </div>
 
+          <div style={rootStyle}>
+            <div style={rowStyle}>
+              <ArcherElement
+                id="trim"
+                relations={[{
+                  targetId: 'Bismark',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                },
+                {
+                  targetId: 'BWA-METH',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                },
+                {
+                  targetId: 'BS_seek2',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                },
+                {
+                  targetId: 'BitmapperBS',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                },
+                {
+                  targetId: 'gemBS',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                }]}
+              >
+                <div style={boxStyle}>Trim</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleTrim} state={this.state.buttonState}>
+                    Trim!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+
+            </div>
+          </div>
           <div style={rowStyle}>
-            <ArcherElement
-              id="element2"
-              relations={[{
-                targetId: 'element3',
-                targetAnchor: 'left',
-                sourceAnchor: 'right',
-                style: { strokeColor: 'blue', strokeWidth: 1 },
-                label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
-              }]}
-            >
-              <div style={boxStyle}>Element 2</div>
-            </ArcherElement>
 
-            <ArcherElement id="element3">
-              <div style={boxStyle}>Element 3</div>
-            </ArcherElement>
-
-            <ArcherElement
-              id="element4"
-              relations={[{
-                targetId: 'root',
-                targetAnchor: 'right',
-                sourceAnchor: 'left',
-                label: 'Arrow 3',
-              }]}
-            >
-              <div style={boxStyle}>Element 4</div>
-            </ArcherElement>
+              <ArcherElement
+                id="Bismark"
+              >
+                <div style={boxStyle}>Bismark</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBismark} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BWA-METH"
+              >
+                <div style={boxStyle}>BWA-METH</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBWA_METH} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BS_seek2"
+              >
+                <div style={boxStyle}>BS_seek2</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBS_seek2} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BitmapperBS"
+              >
+                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBitmapperBS} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="gemBS"
+              >
+                <div style={boxStyle}>gemBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handlegemBS} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
           </div>
         </ArcherContainer>
 
