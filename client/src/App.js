@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import FileUploadProgress  from 'react-fileupload-progress';
 import { ArcherContainer, ArcherElement } from 'react-archer';
 import ProgressButton from 'react-progress-button'
+import socketIOClient from "socket.io-client";
+
+
+var {socketport} = require('../package.json');
 
 
 
@@ -9,13 +13,13 @@ const rootStyle = { display: 'flex', justifyContent: 'center' };
 const rowStyle = { margin: '100px 0', display: 'flex', justifyContent: 'space-between', }
 const boxStyle = { padding: '10px', border: '1px solid black', };
 
-
+const scrollStyle = { margin: '0 10px 20px 10px', padding: '10px', height:'220px',width:'100%',border:'1px solid #ccc',font:'16px/26px Georgia, Garamond, Serif',overflow:'auto', scrollTop:'-220px'};
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {buttonState: ''};
+    this.state = {buttonState: '',response:'sdf', messages:[]};
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
@@ -24,7 +28,34 @@ class App extends Component {
 
 
   componentDidMount() {
+    const socket = socketIOClient(socketport);
+    socket.on("trim",
+      data =>
+      {
+        this.addMessage(<div>{data}</div>);
+        console.log(this.state.messages)
 
+        // this.setState(state => {
+        //   console.log(state.messages)
+        //   const messages = state.messages.push(<div>aa</div>)
+        //   return {
+        //     messages
+        //   }
+        // }, () => {
+        //           console.log(this.state);
+        //       })
+      }
+    );
+    // socket.on("trim",
+    //   data => ToastsStore.success(data)
+    // );
+  }
+
+  addMessage(message) {
+    // Append the message to the component state
+    const messages = this.state.messages;
+    messages.push(message);
+    this.setState({ messages });
   }
 
   async handleClick () {
@@ -172,8 +203,11 @@ class App extends Component {
   render() {
     return (
       <div>
-
+      <div style={scrollStyle}>
+        { this.state.messages }
+      </div>
         <ArcherContainer strokeColor='red' >
+
           <div style={rootStyle}>
             <ArcherElement
               id="upload"
@@ -305,7 +339,6 @@ class App extends Component {
               </ArcherElement>
           </div>
         </ArcherContainer>
-
       </div>
     );
   }
