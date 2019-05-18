@@ -161,8 +161,9 @@ socketio.on('connection', function(socket){
   });
 
   app.get('/api/BitmapperBS', (req, res) => {
-    const ls = spawn('../BitmapperBS/BitmapperBS', ['--search', './geno/hg38_bitmapper/grch38_core_and_bs_controls.fa', '--sensitive', '-e', '0.1',
-     '--seq1', '../pipeline/trim/test1_val_1.fq', '--seq2', '../pipeline/trim/test2_val_2.fq', '--pe', '--bam', '-o','../../pipeline/bitmapperResult/test_bitmapper.bam']);
+    // const ls = spawn('../BitmapperBS/BitmapperBS', ['--search', './geno/hg38_bitmapper/grch38_core_and_bs_controls.fa', '--sensitive', '-e', '0.1',
+    //  '--seq1', '../pipeline/trim/test1_val_1.fq', '--seq2', '../pipeline/trim/test2_val_2.fq', '--pe', '--bam', '-o','../../pipeline/bitmapperResult/test_bitmapper.bam']);
+    const ls = exec('cd ../BitMapperBS/ && ./bitmapperBS --search ../geno/hg38_bitmapper/grch38_core_and_bs_controls.fa --sensitive -e 0.1 --seq1 ../pipeline/trim/test1_val_1.fq --seq2 ../pipeline/trim/test2_val_2.fq --pe --bam -o ../pipeline/bitmapperResult/test_bitmapper.bam')
 
     ls.stdout.on('data', (data) => {
 
