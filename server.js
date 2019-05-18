@@ -137,11 +137,26 @@ socketio.on('connection', function(socket){
 
 
   app.get('/api/BWA_METH', (req, res) => {
-    exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq', (err, stdout) =>{
-      console.log('err', err)
-      console.log('stdout', stdout)
-      console.log('stderr', stderr)
-    })
+    const ls = exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq')
+    
+    ls.stdout.on('data', (data) => {
+
+      console.log('BWA_METH',`stdout: ${data}`)
+      //socket.emit('trim',`stdout: ${data}`)
+    });
+
+    ls.stderr.on('data', (data) => {
+      console.log('BWA_METH',`stderr: ${data}`)
+      //socket.emit('trim',`stderr: ${data}`);
+
+    });
+
+    ls.on('close', (code) => {
+      //socket.emit('trim',`close: child process exited with code ${code}`)
+      console.log(`child process exited with code ${code}`);
+      //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
+      res.send({ express: 'Hello From BWA_METH' });
+    });
   });
 
 
