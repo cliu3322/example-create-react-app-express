@@ -33,8 +33,6 @@ class App extends Component {
       data =>
       {
         this.addMessage(<div>{data}</div>);
-        console.log(this.state.messages)
-
         // this.setState(state => {
         //   console.log(state.messages)
         //   const messages = state.messages.push(<div>aa</div>)

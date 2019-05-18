@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const { spawn } = require('child_process');
+const { spawn, exec } = require('child_process');
 const socketio = require('socket.io')(4000);
 
 const app = express();
@@ -94,12 +94,12 @@ socketio.on('connection', function(socket){
     ls.stdout.on('data', (data) => {
 
       console.log('Bismark',`stdout: ${data}`)
-      //socket.emit('trim',`stdout: ${data}`)
+      socket.emit('Bismark',`stdout: ${data}`)
     });
 
     ls.stderr.on('data', (data) => {
       console.log('Bismark',`stderr: ${data}`)
-      //socket.emit('trim',`stderr: ${data}`);
+      socket.emit('Bismark',`stderr: ${data}`);
 
     });
 
@@ -133,6 +133,15 @@ socketio.on('connection', function(socket){
       //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
       res.send({ express: 'Hello From BWA_METH' });
     });
+  });
+
+
+  app.get('/api/BWA_METH', (req, res) => {
+    exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq > ../pipeline/BWA-METH/bwa_test.sam', (err, stdout, stderr) =>{
+      console.log('err', err)
+      console.log('stdout', stdout)
+      console.log('stderr', stderr)
+    })
   });
 
 
