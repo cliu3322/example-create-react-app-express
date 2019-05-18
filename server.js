@@ -137,7 +137,7 @@ socketio.on('connection', function(socket){
 
 
   app.get('/api/BWA_METH', (req, res) => {
-    exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq > ../pipeline/BWA-METH/bwa_test.sam', (err, stdout, stderr) =>{
+    exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq ', (err, stdout, stderr) =>{
       console.log('err', err)
       console.log('stdout', stdout)
       console.log('stderr', stderr)
