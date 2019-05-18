@@ -111,31 +111,6 @@ socketio.on('connection', function(socket){
     });
   });
 
-
-  app.get('/api/BWA_METH1', (req, res) => {
-    //const ls = spawn('python', ['bwameth.py','--threads', '16', '--reference', '../geno/hg38.fa', '../pipeline/trim/test1_val_1.fq', '../pipeline/trim/test2_val_2.fq','>','../pipeline/BWA-METH/bwa_test.sam']);
-    const ls = spawn('bwameth.py', ['--threads', '16', '--reference', '../geno/hg38.fa', '../pipeline/trim/test1_val_1.fq', '../pipeline/trim/test2_val_2.fq', '> some.sam']);
-    ls.stdout.on('data', (data) => {
-
-      console.log('BWA_METH',`stdout: ${data}`)
-      //socket.emit('trim',`stdout: ${data}`)
-    });
-
-    ls.stderr.on('data', (data) => {
-      console.log('BWA_METH',`stderr: ${data}`)
-      //socket.emit('trim',`stderr: ${data}`);
-
-    });
-
-    ls.on('close', (code) => {
-      //socket.emit('trim',`close: child process exited with code ${code}`)
-      console.log(`child process exited with code ${code}`);
-      //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
-      res.send({ express: 'Hello From BWA_METH' });
-    });
-  });
-
-
   app.get('/api/BWA_METH', (req, res) => {
     const ls = exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq > ../pipeline/BWA-METH/bwa_test.sam')
 
@@ -163,7 +138,7 @@ socketio.on('connection', function(socket){
   app.get('/api/BS_seek2', (req, res) => {
     const ls = spawn('bs_seeker2-align.py', ['-1', '../pipeline/trim/test1_val_1.fq', '-2', '../pipeline/trim/test2_val_2.fq', '--aligner=bowtie2',
      '--bt2-p', '19', '--bt2','--mm','-o', '../pipeline/BSresult/test_bs2.bam', '-f',
-     'bam', '-g', '../geno/hg38_bs2/grch38_core_and_bs_controls.fa', '-d', '../geno/hg38_bs2', '-temp_dir=../pipeline/temp']);
+     'bam', '-g', '../geno/hg38_bs2/grch38_core_and_bs_controls.fa', '-d', '../geno/hg38_bs2', '--temp_dir=../pipeline/temp']);
 
     ls.stdout.on('data', (data) => {
 
@@ -186,7 +161,7 @@ socketio.on('connection', function(socket){
   });
 
   app.get('/api/BitmapperBS', (req, res) => {
-    const ls = spawn('../../BitmapperBS/BitmapperBS', ['--search', './geno/hg38_bitmapper/grch38_core_and_bs_controls.fa', '--sensitive', '-e', '0.1',
+    const ls = spawn('../BitmapperBS/BitmapperBS', ['--search', './geno/hg38_bitmapper/grch38_core_and_bs_controls.fa', '--sensitive', '-e', '0.1',
      '--seq1', '../pipeline/trim/test1_val_1.fq', '--seq2', '../pipeline/trim/test2_val_2.fq', '--pe', '--bam', '-o','../../pipeline/bitmapperResult/test_bitmapper.bam']);
 
     ls.stdout.on('data', (data) => {
