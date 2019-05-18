@@ -29,7 +29,7 @@ class App extends Component {
 
   componentDidMount() {
     const socket = socketIOClient(socketport);
-    socket.on("trim",
+    socket.on("msg",
       data =>
       {
         this.addMessage(<div>{data}</div>);
