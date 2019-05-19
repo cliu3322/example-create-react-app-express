@@ -193,17 +193,17 @@ socketio.on('connection', function(socket){
     ls.stdout.on('data', (data) => {
 
       console.log('gemBS',`stdout: ${data}`)
-      //socketio.emit('msg',`stdout: ${data}`)
+      socketio.emit('msg',`stdout: ${data}`)
     });
 
     ls.stderr.on('data', (data) => {
       console.log('gemBS',`stderr: ${data}`)
-      //socketio.emit('msg',`stderr: ${data}`);
+      socketio.emit('msg',`stderr: ${data}`);
 
     });
 
     ls.on('close', (code) => {
-      //socketio.emit('msg',`close: child process exited with code ${code}`)
+      socketio.emit('msg',`close: child process exited with code ${code}`)
       console.log(`child process exited with code ${code}`);
       //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
       res.send({ express: 'Hello From Express gemBS' });
