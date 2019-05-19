@@ -188,8 +188,8 @@ socketio.on('connection', function(socket){
 
 
   app.get('/api/gemBS', (req, res) => {
-    const ls = spawn('gemBS', ['map']);
-
+    //const ls = spawn('gemBS', ['map']);
+    const ls = exec('cd cd //home/cliu3322/gemBS/prepare/ && gemBS prepare -c example.conf -t example.csv && gemBS map&& gemBS call && gemBS extract && gemBS map-report && gemBS call-report')
     ls.stdout.on('data', (data) => {
 
       console.log('gemBS',`stdout: ${data}`)
