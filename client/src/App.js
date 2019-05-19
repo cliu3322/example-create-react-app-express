@@ -23,8 +23,8 @@ class App extends Component {
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
+    this.handleUploadImage = this.handleUploadImage.bind(this);
   }
-
 
 
   componentDidMount() {
@@ -54,6 +54,23 @@ class App extends Component {
     const messages = this.state.messages;
     messages.push(message);
     this.setState({ messages });
+  }
+  handleUploadImage(ev) {
+    ev.preventDefault();
+
+    const data = new FormData();
+    console.log(this.fileName.value)
+    console.log('file', this.uploadInput.files[0])
+    data.append('file', this.uploadInput.files[0]);
+    data.append('filename', this.fileName.value);
+
+    fetch('/api/world', {
+      method: 'POST',
+      body: data,
+    }).then((response) => {
+      console.log(response)
+    });
+
   }
 
   async handleClick () {
@@ -217,18 +234,18 @@ class App extends Component {
             >
               <div style={boxStyle}>upload</div>
               <div style={boxStyle}>
-                <FileUploadProgress key='ex1' url='/api/world'
-                  onProgress={(e, request, progress) => {console.log('progress', e, request, progress);}}
-                  onLoad={ (e, request) => {console.log('load', e, request);}}
-                  onError={ (e, request) => {console.log('error', e, request);}}
-                  onAbort={ (e, request) => {console.log('abort', e, request);}}
-                  />
-                <FileUploadProgress key='ex2' url='http://localhost:3000/api/upload'
-                  onProgress={(e, request, progress) => {console.log('progress', e, request, progress);}}
-                  onLoad={ (e, request) => {console.log('load', e, request);}}
-                  onError={ (e, request) => {console.log('error', e, request);}}
-                  onAbort={ (e, request) => {console.log('abort', e, request);}}
-                  />
+                  <form onSubmit={this.handleUploadImage}>
+                    <div>
+                      <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+                    </div>
+                    <div>
+                      <input ref={(ref) => { this.fileName = ref; }} type="text" placeholder="Enter the desired name of file" />
+                    </div>
+                    <br />
+                    <div>
+                      <button>Upload</button>
+                    </div>
+                  </form>
               </div>
             </ArcherElement>
           </div>

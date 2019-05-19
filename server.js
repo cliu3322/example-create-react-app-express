@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const { spawn, exec } = require('child_process');
 const socketio = require('socket.io')(4000);
+const fileUpload = require('express-fileupload');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -11,30 +12,24 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+app.use(fileUpload());
 // API calls
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
 app.post('/api/world', (req, res) => {
-  console.log(res.headers)
-  console.log(req.data)
-  // This opens up the writeable stream to `output`
-  var writeStream = fs.createWriteStream('./output.PNG');
 
-  // This pipes the POST data to the file
-  req.pipe(writeStream);
+  console.log('name',req.body.filename)
 
-  // After all the data is saved, respond with a simple html form so they can post more data
-  req.on('end', function () {
-    res.writeHead(200, {"content-type":"text/html"});
-    res.end('<form method="POST"><input name="test" /><input type="submit"></form>');
-  });
-
-  // This is here incase any errors occur
-  writeStream.on('error', function (err) {
-    console.log(err);
-  });
+  let uploadFile = req.files.file;
+  uploadFile.mv(`../pipeline/uploads/${req.files.file.name}`,function(err) {
+    if (err) {
+      return res.send(err)
+    }
+    res.json({file:req.files.file.name})
+  })
 });
 
 app.post('/api/feedback', (req, res) => {
