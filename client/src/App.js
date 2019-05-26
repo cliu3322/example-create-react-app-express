@@ -19,11 +19,12 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {buttonState: '',response:'sdf', messages:[]};
+    this.state = {buttonState: '',response:'sdf', messages:[], trimreport:[]};
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
     this.handleUploadImage = this.handleUploadImage.bind(this);
+    this.handleTrim = this.handleTrim.bind(this);
   }
 
 
@@ -103,15 +104,18 @@ class App extends Component {
         'Content-Type': 'application/json',
       },
     });
-    const body = await response.text();
 
-    console.log(body)
+    console.log(response)
+
+    window.open(response.file)
 
     this.setState({buttonState: 'loading'})
     // make asynchronous call
     setTimeout(() => {
       this.setState({buttonState: 'success'})
     }, 3000)
+
+
   }
 
   async handleBismark () {
@@ -215,6 +219,213 @@ class App extends Component {
     }, 3000)
   }
 
+
+
+  async handleBismark_extract () {
+
+
+    const response = await fetch('/api/Bismark_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBWA_METH_extract () {
+
+
+    const response = await fetch('/api/BWA_METH_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBS_seek2_extract () {
+
+
+    const response = await fetch('/api/BS_seek2_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBitmapperBS_extract () {
+
+
+    const response = await fetch('/api/BitmapperBS_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handlegemBS_extract () {
+
+
+    const response = await fetch('/api/gemBS', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBismark_plot () {
+
+
+    const response = await fetch('/api/Bismark_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBWA_METH_plot () {
+
+
+    const response = await fetch('/api/BWA_METH_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBS_seek2_plot () {
+
+
+    const response = await fetch('/api/BS_seek2_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBitmapperBS_plot () {
+
+
+    const response = await fetch('/api/BitmapperBS_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handlegemBS_plot () {
+
+
+    const response = await fetch('/api/gemBS_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
   render() {
     return (
       <div>
@@ -296,6 +507,7 @@ class App extends Component {
                     Trim!
                   </ProgressButton>
                 </div>
+                { this.state.trimreport }
               </ArcherElement>
 
             </div>
@@ -304,6 +516,13 @@ class App extends Component {
 
               <ArcherElement
                 id="Bismark"
+                relations={[{
+                  targetId: 'Bismark-extract',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                }]}
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
@@ -314,6 +533,13 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="BWA-METH"
+                relations={[{
+                  targetId: 'BWA-METH-extract',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                }]}
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
@@ -324,6 +550,13 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="BS_seek2"
+                relations={[{
+                  targetId: 'BS_seek2-extract',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                }]}
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
@@ -334,6 +567,13 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="BitmapperBS"
+                relations={[{
+                  targetId: 'BitmapperBS-extract',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                }]}
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
@@ -344,6 +584,13 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="gemBS"
+                relations={[{
+                  targetId: 'gemBS-extract',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                }]}
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
@@ -353,6 +600,150 @@ class App extends Component {
                 </div>
               </ArcherElement>
           </div>
+
+          <div style={rowStyle}>
+
+              <ArcherElement
+                id="Bismark-extract"
+                relations={[{
+                  targetId: 'Bismark-plot',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }]}
+              >
+                <div style={boxStyle}>Bismark</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBismark_extract} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BWA-METH-extract"
+                relations={[{
+                  targetId: 'BWA-METH-plot',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }]}
+              >
+                <div style={boxStyle}>BWA-METH</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBWA_METH_extract} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BS_seek2-extract"
+                relations={[{
+                  targetId: 'BS_seek2-plot',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }]}
+              >
+                <div style={boxStyle}>BS_seek2</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBS_seek2_extract} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BitmapperBS-extract"
+                relations={[{
+                  targetId: 'BitmapperBS-plot',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }]}
+              >
+                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBitmapperBS_extract} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="gemBS-extract"
+                relations={[{
+                  targetId: 'gemBS-plot',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }]}
+              >
+                <div style={boxStyle}>gemBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handlegemBS_extract} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+          </div>
+
+          <div style={rowStyle}>
+
+              <ArcherElement
+                id="Bismark-plot"
+              >
+                <div style={boxStyle}>Bismark</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBismark_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BWA-METH-plot"
+              >
+                <div style={boxStyle}>BWA-METH</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBWA_METH_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BS_seek2-plot"
+              >
+                <div style={boxStyle}>BS_seek2</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBS_seek2_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BitmapperBS-plot"
+              >
+                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBitmapperBS_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="gemBS-plot"
+              >
+                <div style={boxStyle}>gemBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handlegemBS_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+          </div>
+
         </ArcherContainer>
       </div>
     );
