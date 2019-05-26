@@ -110,7 +110,7 @@ app.get('/api/Bismark', (req, res) => {
 });
 
 app.get('/api/BWA_METH', (req, res) => {
-  const ls = exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq > ../pipeline/BWA-METH/bwa_test.sam')
+  const ls = exec('bwameth.py --threads 16 --reference ../geno/hg38.fa ../pipeline/trim/test1_val_1.fq ../pipeline/trim/test2_val_2.fq > ../pipeline/BWA/bwa_test.sam')
 
   ls.stdout.on('data', (data) => {
 
@@ -250,7 +250,7 @@ app.get('/api/Bismark_extract', (req, res) => {
 });
 
 app.get('/api/BWA_METH_extract', (req, res) => {
-  const ls = exec('samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ../pipeline/BWA-METH/bwa_test.bam > ../pipeline/BWA-METH/bwa_test.filter.bam');
+  const ls = exec('samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ../pipeline/BWA/bwa_test.bam > ../pipeline/BWA/bwa_test.filter.bam');
 
   ls.stdout.on('data', (data) => {
 
@@ -271,7 +271,7 @@ app.get('/api/BWA_METH_extract', (req, res) => {
     //res.send({ express: 'Hello From BWA_METH' });
   });
 
-  const ls2 = exec('picard -Xmx32G SortSam INPUT=../pipeline/BWA-METH/bwa_test.filter.bam OUTPUT=../pipeline/BWA-METH/bwa_test.sort.bam SORT_ORDER=coordinate')
+  const ls2 = exec('picard -Xmx32G SortSam INPUT=../pipeline/BWA/bwa_test.filter.bam OUTPUT=../pipeline/BWA/bwa_test.sort.bam SORT_ORDER=coordinate')
 
   ls2.stdout.on('data', (data) => {
 
@@ -292,28 +292,28 @@ app.get('/api/BWA_METH_extract', (req, res) => {
     //res.send({ express: 'Hello From BWA_METH_extract' });
   });
 
-  // const ls3 = exec('samtools index ../pipeline/BWA-METH/bwa_test.sort.bam')
-  //
-  // ls3.stdout.on('data', (data) => {
-  //
-  //   console.log('BWA_METH',`stdout: ${data}`)
-  //   socketio.emit('msg',`stdout: ${data}`)
-  // });
-  //
-  // ls3.stderr.on('data', (data) => {
-  //   console.log('BWA_METH',`stderr: ${data}`)
-  //   socketio.emit('msg',`stderr: ${data}`);
-  //
-  // });
-  //
-  // l3.on('close', (code) => {
-  //   socketio.emit('msg',`close: child process exited with code ${code}`)
-  //   console.log(`child process exited with code ${code}`);
-  //   //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
-  //   //res.send({ express: 'Hello From BWA_METH_extract' });
-  // });
+  const ls3 = exec('samtools index ../pipeline/BWA/bwa_test.sort.bam')
 
-  const ls4 = exec('MethylDackel extract ../geno/hg38.fa --CHH --CHG ../pipeline/BWA-METH/bwa_test.sort.bam')
+  ls3.stdout.on('data', (data) => {
+
+    console.log('BWA_METH',`stdout: ${data}`)
+    socketio.emit('msg',`stdout: ${data}`)
+  });
+
+  ls3.stderr.on('data', (data) => {
+    console.log('BWA_METH',`stderr: ${data}`)
+    socketio.emit('msg',`stderr: ${data}`);
+
+  });
+
+  l3.on('close', (code) => {
+    socketio.emit('msg',`close: child process exited with code ${code}`)
+    console.log(`child process exited with code ${code}`);
+    //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
+    //res.send({ express: 'Hello From BWA_METH_extract' });
+  });
+
+  const ls4 = exec('MethylDackel extract ../geno/hg38.fa --CHH --CHG ../pipeline/BWA/bwa_test.sort.bam')
 
   ls4.stdout.on('data', (data) => {
 
@@ -337,7 +337,7 @@ app.get('/api/BWA_METH_extract', (req, res) => {
 
 app.get('/api/BS_seek2_extract', (req, res) => {
   const ls = spawn('bs_seeker2-align.py', ['-1', '../pipeline/trim/test1_val_1.fq', '-2', '../pipeline/trim/test2_val_2.fq', '--aligner=bowtie2',
-   '--bt2-p', '19', '--bt2','--mm','-o', '../pipeline/BSresult/test_bs2.bam', '-f',
+   '--bt2-p', '19', '--bt2--mm','-o', '../pipeline/BSresult/test_bs2.bam', '-f',
    'bam', '-g', '../geno/hg38_bs2/grch38_core_and_bs_controls.fa', '-d', '../geno/hg38_bs2', '--temp_dir=../pipeline/temp']);
 
   ls.stdout.on('data', (data) => {
