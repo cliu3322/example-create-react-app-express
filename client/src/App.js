@@ -253,7 +253,6 @@ class App extends Component {
     });
     const body = await response.text();
 
-    console.log(body)
 
     this.setState({buttonState: 'loading'})
     // make asynchronous call
