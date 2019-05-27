@@ -398,23 +398,43 @@ app.get('/api/BS_seek2_extract', (req, res) => {
     socketio.emit('msg',`close: child process exited with code ${code}`)
     console.log(`child process exited with code ${code}`);
     //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
+    //res.send({ express: 'Hello From BS_seek2' });
+  });
+
+
+  const ls4 = exec('MethylDackel extract /home/cliu3322/geno/hg38_bs2/grch38_core_and_bs_controls.fa --CHH --CHG /home/cliu3322/pipeline/BSresult/test_bs2.sort.bam');
+
+  ls4.stdout.on('data', (data) => {
+
+    console.log('BS_seek2',`stdout: ${data}`)
+    socketio.emit('msg',`stdout: ${data}`)
+  });
+
+  ls4.stderr.on('data', (data) => {
+    console.log('BS_seek2',`stderr: ${data}`)
+    socketio.emit('msg',`stderr: ${data}`);
+
+  });
+
+  ls4.on('close', (code) => {
+    socketio.emit('msg',`close: child process exited with code ${code}`)
+    console.log(`child process exited with code ${code}`);
+    //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
     res.send({ express: 'Hello From BS_seek2' });
   });
 });
 
 app.get('/api/BitmapperBS_extract', (req, res) => {
-  // const ls = spawn('../BitmapperBS/BitmapperBS', ['--search', './geno/hg38_bitmapper/grch38_core_and_bs_controls.fa', '--sensitive', '-e', '0.1',
-  //  '--seq1', '../pipeline/trim/test1_val_1.fq', '--seq2', '../pipeline/trim/test2_val_2.fq', '--pe', '--bam', '-o','../../pipeline/bitmapperResult/test_bitmapper.bam']);
-  const ls = exec('cd ../BitMapperBS/ && ./bitmapperBS --search ../geno/hg38_bitmapper/grch38_core_and_bs_controls.fa --sensitive -e 0.1 --seq1 ../pipeline/trim/test1_val_1.fq --seq2 ../pipeline/trim/test2_val_2.fq --pe --bam -o ../pipeline/bitmapperResult/test_bitmapper.bam')
+  const ls = exec('samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/cliu3322/pipeline/bitmapperResult/test_bitmapper.bam > /home/cliu3322/pipeline/bitmapperResult/test_bitmapper.filter.bam');
 
   ls.stdout.on('data', (data) => {
 
-    console.log('BitmapperBS',`stdout: ${data}`)
+    console.log('BitmapperBS_extract',`stdout: ${data}`)
     socketio.emit('msg',`stdout: ${data}`)
   });
 
   ls.stderr.on('data', (data) => {
-    console.log('BitmapperBS',`stderr: ${data}`)
+    console.log('BitmapperBS_extract',`stderr: ${data}`)
     socketio.emit('msg',`stderr: ${data}`);
 
   });
@@ -423,32 +443,75 @@ app.get('/api/BitmapperBS_extract', (req, res) => {
     socketio.emit('msg',`close: child process exited with code ${code}`)
     console.log(`child process exited with code ${code}`);
     //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
-    res.send({ express: 'Hello From BitmapperBS' });
+    //res.send({ express: 'Hello From BS_seek2' });
   });
-});
 
-app.get('/api/gemBS_extract', (req, res) => {
-  //const ls = spawn('gemBS', ['map']);
-  const ls = exec('cd //home/cliu3322/gemBS/prepare/ && gemBS prepare -c example.conf -t example.csv && gemBS map&& gemBS call && gemBS extract && gemBS map-report && gemBS call-report')
-  ls.stdout.on('data', (data) => {
+  const ls2 = exec('picard -Xmx32G SortSam INPUT=/home/cliu3322/pipeline/bitmapperResult/test_bitmapper.filter.bam OUTPUT=/home/cliu3322/pipeline/bitmapperResult/test_bitmapper.sort.bam SORT_ORDER=coordinate');
 
-    console.log('gemBS',`stdout: ${data}`)
+  ls2.stdout.on('data', (data) => {
+
+    console.log('BitmapperBS_extract',`stdout: ${data}`)
     socketio.emit('msg',`stdout: ${data}`)
   });
 
-  ls.stderr.on('data', (data) => {
-    console.log('gemBS',`stderr: ${data}`)
+  ls2.stderr.on('data', (data) => {
+    console.log('BitmapperBS_extract',`stderr: ${data}`)
     socketio.emit('msg',`stderr: ${data}`);
 
   });
 
-  ls.on('close', (code) => {
+  ls2.on('close', (code) => {
     socketio.emit('msg',`close: child process exited with code ${code}`)
     console.log(`child process exited with code ${code}`);
     //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
-    res.send({ express: 'Hello From Express gemBS' });
+    //res.send({ express: 'Hello From BS_seek2' });
+  });
+
+  const ls3 = exec('samtools index /home/cliu3322/pipeline/bitmapperResult/test_bitmapper.sort.bam');
+
+  ls3.stdout.on('data', (data) => {
+
+    console.log('BitmapperBS_extract',`stdout: ${data}`)
+    socketio.emit('msg',`stdout: ${data}`)
+  });
+
+  ls3.stderr.on('data', (data) => {
+    console.log('BitmapperBS_extract',`stderr: ${data}`)
+    socketio.emit('msg',`stderr: ${data}`);
+
+  });
+
+  ls3.on('close', (code) => {
+    socketio.emit('msg',`close: child process exited with code ${code}`)
+    console.log(`child process exited with code ${code}`);
+    //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
+    //res.send({ express: 'Hello From BS_seek2' });
+  });
+
+
+  const ls4 = exec('MethylDackel extract /home/cliu3322/geno/hg38_bitmapper/grch38_core_and_bs_controls.fa --CHH --CHG /home/cliu3322/pipeline/bitmapperResult/test_bs2.sort.bam');
+
+  ls4.stdout.on('data', (data) => {
+
+    console.log('BitmapperBS_extract',`stdout: ${data}`)
+    socketio.emit('msg',`stdout: ${data}`)
+  });
+
+  ls4.stderr.on('data', (data) => {
+    console.log('BitmapperBS_extract',`stderr: ${data}`)
+    socketio.emit('msg',`stderr: ${data}`);
+
+  });
+
+  ls4.on('close', (code) => {
+    socketio.emit('msg',`close: child process exited with code ${code}`)
+    console.log(`child process exited with code ${code}`);
+    //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
+    res.send({ express: 'Hello From BitmapperBS_extract' });
   });
 });
+
+
 
 
 app.get('/api/Bismark_plot', (req, res) => {

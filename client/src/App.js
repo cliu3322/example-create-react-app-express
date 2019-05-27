@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FileUploadProgress  from 'react-fileupload-progress';
+
 import { ArcherContainer, ArcherElement } from 'react-archer';
 import ProgressButton from 'react-progress-button'
 import socketIOClient from "socket.io-client";
@@ -583,13 +583,7 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="gemBS"
-                relations={[{
-                  targetId: 'gemBS-extract',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
-                }]}
+                relations={[]}
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
@@ -670,23 +664,6 @@ class App extends Component {
                   </ProgressButton>
                 </div>
               </ArcherElement>
-              <ArcherElement
-                id="gemBS-extract"
-                relations={[{
-                  targetId: 'gemBS-plot',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
-                }]}
-              >
-                <div style={boxStyle}>gemBS</div>
-                <div style={boxStyle}>
-                  <ProgressButton onClick={this.handlegemBS_extract} state={this.state.buttonState}>
-                    GO!
-                  </ProgressButton>
-                </div>
-              </ArcherElement>
           </div>
 
           <div style={rowStyle}>
@@ -727,16 +704,6 @@ class App extends Component {
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
                   <ProgressButton onClick={this.handleBitmapperBS_plot} state={this.state.buttonState}>
-                    GO!
-                  </ProgressButton>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="gemBS-plot"
-              >
-                <div style={boxStyle}>gemBS</div>
-                <div style={boxStyle}>
-                  <ProgressButton onClick={this.handlegemBS_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
