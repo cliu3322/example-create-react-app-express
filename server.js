@@ -338,7 +338,7 @@ app.get('/api/BWA_METH_extract', (req, res) => {
 });
 
 app.get('/api/BS_seek2_extract', (req, res) => {
-  const ls = exec('samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ../pipeline/BSresult/test_bs2.bam > ../pipeline/BSresult/test_bs2.filter.bam');
+  const ls = exec('samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/cliu3322/pipeline/BSresult/test_bs2.bam > /home/cliu3322/pipeline/BSresult/test_bs2.filter.bam');
 
   ls.stdout.on('data', (data) => {
 
@@ -359,7 +359,7 @@ app.get('/api/BS_seek2_extract', (req, res) => {
     //res.send({ express: 'Hello From BS_seek2' });
   });
 
-  const ls2 = exec('picard -Xmx32G SortSam INPUT=../pipeline/BSresult/test_bs2.filter.bam OUTPUT=../pipeline/BSresult/test_bs2.sort.bam SORT_ORDER=coordinate');
+  const ls2 = exec('picard -Xmx32G SortSam INPUT=/home/cliu3322/pipeline/BSresult/test_bs2.filter.bam OUTPUT=/home/cliu3322/pipeline/BSresult/test_bs2.sort.bam SORT_ORDER=coordinate');
 
   ls2.stdout.on('data', (data) => {
 
@@ -380,7 +380,7 @@ app.get('/api/BS_seek2_extract', (req, res) => {
     //res.send({ express: 'Hello From BS_seek2' });
   });
 
-  const ls3 = exec('samtools index ../pipeline/BSresult/test_bs2.sort.bam');
+  const ls3 = exec('samtools index /home/cliu3322/pipeline/BSresult/test_bs2.sort.bam');
 
   ls3.stdout.on('data', (data) => {
 
