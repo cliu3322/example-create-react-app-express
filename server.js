@@ -133,9 +133,11 @@ app.get('/api/BWA_METH', (req, res) => {
 });
 
 app.get('/api/BS_seek2', (req, res) => {
-  const ls = spawn('bs_seeker2-align.py', ['-1', '../pipeline/trim/test1_val_1.fq', '-2', '../pipeline/trim/test2_val_2.fq', '--aligner=bowtie2',
-   '--bt2-p', '19', '--bt2--mm','-o', '../pipeline/BSresult/test_bs2.bam', '-f',
-   'bam', '-g', '../geno/hg38_bs2/grch38_core_and_bs_controls.fa', '-d', '../geno/hg38_bs2', '--temp_dir=../pipeline/temp']);
+  // const ls = spawn('bs_seeker2-align.py', ['-1', '../pipeline/trim/test1_val_1.fq', '-2', '../pipeline/trim/test2_val_2.fq', '--aligner=bowtie2',
+  //  '--bt2-p', '19', '--bt2--mm','-o', '../pipeline/BSresult/test_bs2.bam', '-f',
+  //  'bam', '-g', '../geno/hg38_bs2/grch38_core_and_bs_controls.fa', '-d', '../geno/hg38_bs2', '--temp_dir=../pipeline/temp']);
+
+  const ls = exec('bs_seeker2-align.py -1 ../pipeline/trim/test1_val_1.fq -2 ../pipeline/trim/test2_val_2.fq --aligner=bowtie2 --bt2-p 19 --bt2--mm -o ../pipeline/BSresult/test_bs2.bam -f bam -g ../geno/hg38_bs2/grch38_core_and_bs_controls.fa -d ../geno/hg38_bs2 --temp_dir=../pipeline/temp');
 
   ls.stdout.on('data', (data) => {
 
