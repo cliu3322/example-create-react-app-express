@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-socketio.origins('*.*');
+//socketio.origins('*.*');
 
 
 socketio.on('disconnect', function(socket){
