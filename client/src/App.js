@@ -424,6 +424,30 @@ class App extends Component {
     }, 3000)
   }
 
+  async test (a) {
+    console.log(this.value)
+
+  }
+
+  async handle () {
+    const response = await fetch('/api/handle', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({value:this.value,method:this.method})
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+
+  }
 
   render() {
     return (
@@ -583,7 +607,19 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="gemBS"
-                relations={[]}
+                relations={[{
+                  targetId: 'gembs-plot',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                },{
+                  targetId: 'gembs-goleft',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                }]}
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
@@ -604,6 +640,13 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                },
+                {
+                  targetId: 'Bismark-goleft',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
                 }]}
               >
                 <div style={boxStyle}>Bismark</div>
@@ -621,6 +664,12 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                },{
+                  targetId: 'BWA-METH-goleft',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
                 }]}
               >
                 <div style={boxStyle}>BWA-METH</div>
@@ -638,6 +687,12 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }, {
+                  targetId: 'BS_seek2-goleft',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
                 }]}
               >
                 <div style={boxStyle}>BS_seek2</div>
@@ -655,6 +710,12 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }, {
+                  targetId: 'BitmapperBS-goleft',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
                 }]}
               >
                 <div style={boxStyle}>BitmapperBS</div>
@@ -664,16 +725,36 @@ class App extends Component {
                   </ProgressButton>
                 </div>
               </ArcherElement>
+              <div></div>
           </div>
 
           <div style={rowStyle}>
-
+              <ArcherElement
+                id="Bismark-goleft"
+              >
+                <div style={boxStyle}>Bismark</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBismark_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
               <ArcherElement
                 id="Bismark-plot"
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
                   <ProgressButton onClick={this.handleBismark_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BWA-METH-goleft"
+              >
+                <div style={boxStyle}>BWA-METH</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBWA_METH_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -689,11 +770,31 @@ class App extends Component {
                 </div>
               </ArcherElement>
               <ArcherElement
+                id="BS_seek2-goleft"
+              >
+                <div style={boxStyle}>BS_seek2</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBS_seek2_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
                 id="BS_seek2-plot"
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
                   <ProgressButton onClick={this.handleBS_seek2_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="BitmapperBS-goleft"
+              >
+                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBitmapperBS_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -708,6 +809,27 @@ class App extends Component {
                   </ProgressButton>
                 </div>
               </ArcherElement>
+              <ArcherElement
+                id="gembs-goleft"
+              >
+                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handleBitmapperBS_plot} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+              <ArcherElement
+                id="gembs-plot"
+              >
+                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton onClick={this.handle} value ={"gembs"} method={"plot"} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
+
           </div>
 
         </ArcherContainer>

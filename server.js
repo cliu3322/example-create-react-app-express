@@ -27,7 +27,7 @@ app.post('/api/world', (req, res) => {
   console.log('name',req.body.filename)
 
   let uploadFile = req.files.file;
-  uploadFile.mv(`../pipeline/uploads/${req.files.file.name}`,function(err) {
+  uploadFile.mv(`/home/eric_liu/pipeline/uploads/${req.files.file.name}`,function(err) {
     if (err) {
       return res.send(err)
     }
@@ -63,6 +63,7 @@ socketio.on('connection', function(socket){
 });
 
 app.get('/api/trim', (req, res) => {
+  //trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/azureuser/pipeline/trim /home/azureuser/pipeline/uploads/test1.fastq /home/azureuser/pipeline/uploads/test2.fastq
   const ls = spawn('trim_galore', ['--paired', '--trim1', '-o', '../pipeline/trim', '../pipeline/uploads/test1.fastq', '../pipeline/uploads/test2.fastq']);
   ls.stdout.on('data', (data) => {
 
@@ -86,6 +87,7 @@ app.get('/api/trim', (req, res) => {
 
 
 app.get('/api/Bismark', (req, res) => {
+  //bismark /datadrive/geno -o test -1 /home/azureuser/pipeline/trim/test1_val_1.fq -2 /home/azureuser/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional
   const ls = spawn('bismark', ['../geno', '-o','../pipeline/test_direction_result' , '-1', '../pipeline/trim/test1_val_1.fq',
   '-2', '../pipeline/trim/test2_val_2.fq', '--parallel', '4', '-p', '4', '--score_min', 'L,0,-0.6', '--non_directional']);
 
@@ -186,7 +188,7 @@ app.get('/api/BitmapperBS', (req, res) => {
 
 app.get('/api/gemBS', (req, res) => {
   //const ls = spawn('gemBS', ['map']);
-  const ls = exec('cd //home/cliu3322/gemBS/prepare/ && gemBS prepare -c example.conf -t example.csv && gemBS map&& gemBS call && gemBS extract && gemBS map-report && gemBS call-report')
+  const ls = exec('cd //home/cliu3322/gemBS/prepare/ && gemBS prepare -c example.conf -t example.csv && gemBS map && gemBS call && gemBS extract && gemBS map-report && gemBS call-report')
   ls.stdout.on('data', (data) => {
 
     console.log('gemBS',`stdout: ${data}`)
@@ -230,7 +232,7 @@ app.get('/api/Bismark_extract', (req, res) => {
     //res.send({ express: 'Hello From Bismark' });
   });
 
-  const ls2 = exec('bismark_methylation_extractor --bedGraph --gzip --CX ../pipeline/test_direction_result/test1_val_1_bismark_bt2_pe.filter.bam');
+  const ls2 = exec('bismark_methylation_extractor --bedGraph --gzip --CX /home/cliu3322/pipeline/test_direction_result/test1_val_1_bismark_bt2_pe.filter.bam');
   ls2.stdout.on('data', (data) => {
 
     console.log('Bismark',`stdout: ${data}`)
@@ -273,7 +275,7 @@ app.get('/api/BWA_METH_extract', (req, res) => {
     //res.send({ express: 'Hello From BWA_METH' });
   });
 
-  const ls2 = exec('picard -Xmx32G SortSam INPUT=../pipeline/BWA/bwa_test.filter.bam OUTPUT=../pipeline/BWA/bwa_test.sort.bam SORT_ORDER=coordinate')
+  const ls2 = exec('picard -Xmx32G SortSam INPUT= /home/cliu3322/pipeline/BWA/bwa_test.filter.bam OUTPUT=/home/cliu3322/pipeline/BWA/bwa_test.sort.bam SORT_ORDER=coordinate')
 
   ls2.stdout.on('data', (data) => {
 
@@ -294,7 +296,7 @@ app.get('/api/BWA_METH_extract', (req, res) => {
     //res.send({ express: 'Hello From BWA_METH_extract' });
   });
 
-  const ls3 = exec('samtools index ../pipeline/BWA/bwa_test.sort.bam')
+  const ls3 = exec('samtools index /home/cliu3322/pipeline/BWA/bwa_test.sort.bam')
 
   ls3.stdout.on('data', (data) => {
 
@@ -315,7 +317,7 @@ app.get('/api/BWA_METH_extract', (req, res) => {
     //res.send({ express: 'Hello From BWA_METH_extract' });
   });
 
-  const ls4 = exec('MethylDackel extract ../geno/hg38.fa --CHH --CHG ../pipeline/BWA/bwa_test.sort.bam')
+  const ls4 = exec('MethylDackel extract /home/cliu3322/geno/hg38.fa --CHH --CHG /home/cliu3322/pipeline/BWA/bwa_test.sort.bam')
 
   ls4.stdout.on('data', (data) => {
 
@@ -632,4 +634,107 @@ app.get('/api/gemBS_plot', (req, res) => {
     //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
     res.send({ express: 'Hello From Express gemBS' });
   });
+});
+
+
+
+app.post('/api/handle', (req, res) => {
+
+  var path ='';
+  var file =''
+
+  switch(req.body.method) {
+    case "goleft":
+      switch(req.body.value) {
+        case "bismark":
+          path = "/home/cliu3322/pipeline/test_direction_result/";
+          file = "test1_val_1_bismark_bt2_pe.filter.bam";
+          break;
+        case "bwa":
+          path = "/home/cliu3322/pipeline/BWA/";
+          file = "bwa_test.sort.bam";
+          break;
+        case "bs2":
+          path = "/home/cliu3322/pipeline/BSresult/'";
+          file = "test_bs2.sort.bam";
+          break;
+        case "bitmapperbs":
+          path = "/home/cliu3322/pipeline/bitmapperResult/";
+          file = "test_bs2.sort.bam";
+          break;
+        case "gemBS":
+          path = "/home/cliu3322/pipeline/bitmapperResult/";
+          file = "test_bs2.sort.bam";
+          break;
+        default:
+          path = '';
+          file = '';
+      }
+      const ls = exec('goleft indexcov --d '+path + ' '+ file)
+      ls.stdout.on('data', (data) => {
+        console.log(req.body.value,`stdout: ${data}`)
+        socketio.emit('msg',`stdout: ${data}`)
+      });
+
+      ls.stderr.on('data', (data) => {
+        console.log(req.body.value,`stderr: ${data}`)
+        socketio.emit('msg',`stderr: ${data}`);
+
+      });
+
+      ls.on('close', (code) => {
+        socketio.emit('msg',`close: child process exited with code ${code}`)
+        console.log(`child process exited with code ${code}`);
+        //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
+        res.send({ express: 'Hello From Express '+req.body.value });
+      });
+      break;
+    case "plot":
+      switch(req.body.value) {
+        case "bismark":
+          path = "/home/cliu3322/pipeline/test_direction_result/";
+          file = "test1_val_1_bismark_bt2_pe.filter.bam";
+          break;
+        case "bwa":
+          path = "/home/cliu3322/pipeline/BWA/";
+          file = "bwa_test.sort.bam";
+          break;
+        case "bs2":
+          path = "/home/cliu3322/pipeline/BSresult/'";
+          file = "test_bs2.sort.bam";
+          break;
+        case "bitmapperbs":
+          path = "/home/cliu3322/pipeline/bitmapperResult/";
+          file = "test_bs2.sort.bam";
+          break;
+        case "gemBS":
+          path = "/home/cliu3322/pipeline/bitmapperResult/";
+          file = "test_bs2.sort.bam";
+          break;
+        default:
+          path = '';
+          file = '';
+      }
+      const ls = exec('goleft indexcov --d '+path + ' '+ file)
+      ls.stdout.on('data', (data) => {
+        console.log(req.body.value,`stdout: ${data}`)
+        socketio.emit('msg',`stdout: ${data}`)
+      });
+
+      ls.stderr.on('data', (data) => {
+        console.log(req.body.value,`stderr: ${data}`)
+        socketio.emit('msg',`stderr: ${data}`);
+
+      });
+
+      ls.on('close', (code) => {
+        socketio.emit('msg',`close: child process exited with code ${code}`)
+        console.log(`child process exited with code ${code}`);
+        //res.sendFile('/Users/chunyiliu/projects/pipeline/trim/test1.fastq_trimming_report.txt');
+        res.send({ express: 'Hello From Express '+req.body.value });
+      });
+      break;
+    default:
+      break;
+  }
 });
