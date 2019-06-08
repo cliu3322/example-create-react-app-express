@@ -3,9 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const { spawn, exec } = require('child_process');
-const socketio = require('socket.io')(4000);
+const socketio = require('socket.io')(4000,{transports: ['websocket']});
 socketio.origins(['*.*']);
-
 const fileUpload = require('express-fileupload');
 
 const app = express();
