@@ -642,7 +642,7 @@ app.post('/api/handle', (req, res) => {
 
   var path ='';
   var file =''
-
+  const ls;
   switch(req.body.method) {
     case "goleft":
       switch(req.body.value) {
@@ -670,7 +670,7 @@ app.post('/api/handle', (req, res) => {
           path = '';
           file = '';
       }
-      const ls = exec('goleft indexcov --d '+path + ' '+ file)
+      ls = exec('goleft indexcov --d '+path + ' '+ file)
       ls.stdout.on('data', (data) => {
         console.log(req.body.value,`stdout: ${data}`)
         socketio.emit('msg',`stdout: ${data}`)
@@ -715,7 +715,7 @@ app.post('/api/handle', (req, res) => {
           path = '';
           file = '';
       }
-      const ls = exec('goleft indexcov --d '+path + ' '+ file)
+      ls = exec('goleft indexcov --d '+path + ' '+ file)
       ls.stdout.on('data', (data) => {
         console.log(req.body.value,`stdout: ${data}`)
         socketio.emit('msg',`stdout: ${data}`)
