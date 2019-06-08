@@ -29,7 +29,7 @@ class App extends Component {
 
 
   componentDidMount() {
-    const socket = socketIOClient(socketport);
+    const socket = socketIOClient('52.183.78.102:1000');
     socket.on("msg",
       data =>
       {
