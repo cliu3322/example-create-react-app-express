@@ -1,6 +1,6 @@
 
+
 goleft indexcov --d /home/eric_liu/pipeline/BWA/output /home/eric_liu/pipeline/BWA/bwa_test.sort.bam
-##OUTPUT
 
 samtools index /home/eric_liu/pipeline/BWA/bwa_test.sort.bam
 
@@ -12,7 +12,13 @@ bismark_methylation_extractor --bedGraph --gzip --CX /home/eric_liu/pipeline/tes
 
 samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/test_direction_result/test2_val_2_bismark_bt2_pe.bam > /home/eric_liu/pipeline/test_direction_result/test2_val_2_bismark_bt2_pe.filter.bam
 
-gemBS ##?
+gemBS prepare -c /home/eric_liu/pipeline/gembsprepare/example.conf -t /home/eric_liu/pipeline/gembsprepare/example.csv
+gemBS map
+gemBS call
+gemBS extract
+gemBS map-report
+gemBS call-report
+
 
 bitmapperBS --search /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --sensitive -e 0.1 --seq1 /home/eric_liu/pipeline/trim/test1_val_1.fq --seq2 /home/eric_liu/pipeline/trim/test2_val_2.fq --pe --bam -o /home/eric_liu/pipeline/bitmapperResult/test_bitmapper.bam
 
