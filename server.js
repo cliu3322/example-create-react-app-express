@@ -14,6 +14,10 @@ const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4000');
+  next();
+});
 
 
 app.use(fileUpload());
