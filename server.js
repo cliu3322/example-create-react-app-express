@@ -642,7 +642,7 @@ app.post('/api/handle', (req, res) => {
 
   var path ='';
   var file =''
-  const ls;
+  var ls ='';
   switch(req.body.method) {
     case "goleft":
       switch(req.body.value) {
