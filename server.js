@@ -14,7 +14,10 @@ const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-res.setHeader('Access-Control-Allow-Origin', '*');
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 app.use(fileUpload());
 // API calls
