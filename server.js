@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const { spawn, exec } = require('child_process');
-const socketio = require('socket.io')(4000);
+const socketio = require('socket.io')(4000, {log:false, origins:'*:*'});
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -16,7 +16,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Sec-WebSocket-Accept', 'jjjlkjkjl');
   next();
 });
 
