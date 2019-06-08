@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const { spawn, exec } = require('child_process');
-const socketio = require('socket.io')(6000);
+const socketio = require('socket.io')(4000);
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -56,9 +56,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
-//socketio.origins('*.*');
-
 
 socketio.on('disconnect', function(socket){
 	console.log('user disconnected');
