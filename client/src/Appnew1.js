@@ -21,7 +21,10 @@ class App extends Component {
     super(props);
     this.state = {buttonState: '',response:'sdf', messages:[], trimreport:[]};
 
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
     this.handleUploadImage = this.handleUploadImage.bind(this);
+    this.handleTrim = this.handleTrim.bind(this);
   }
 
 
@@ -42,7 +45,9 @@ class App extends Component {
         //       })
       }
     );
-
+    // socket.on("trim",
+    //   data => ToastsStore.success(data)
+    // );
   }
 
   addMessage(message) {
@@ -69,16 +74,378 @@ class App extends Component {
 
   }
 
+  async handleClick () {
+
+
+    const response = await fetch('/api/world', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: JSON.stringify({ post: this.state.post }),
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleTrim () {
+
+
+    const response = await fetch('/api/trim', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log(response)
+
+    window.open(response.file)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+
+
+  }
+
+  async handleBismark () {
+
+
+    const response = await fetch('/api/Bismark', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBWA_METH () {
+
+
+    const response = await fetch('/api/BWA_METH', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBS_seek2 () {
+
+
+    const response = await fetch('/api/BS_seek2', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBitmapperBS () {
+
+
+    const response = await fetch('/api/BitmapperBS', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handlegemBS () {
+
+
+    const response = await fetch('/api/gemBS', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+
+  async handleBismark_extract () {
+
+
+    const response = await fetch('/api/Bismark_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBWA_METH_extract () {
+
+
+    // const response = await fetch('/api/BWA_METH_extract', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+    await fetch('/api/BWA_METH_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    //const body = await response.text();
+
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBS_seek2_extract () {
+
+
+    const response = await fetch('/api/BS_seek2_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBitmapperBS_extract () {
+
+
+    const response = await fetch('/api/BitmapperBS_extract', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handlegemBS_extract () {
+
+
+    const response = await fetch('/api/gemBS', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBismark_plot () {
+
+
+    const response = await fetch('/api/Bismark_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBWA_METH_plot () {
+
+
+    const response = await fetch('/api/BWA_METH_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+
+  async handleBS_seek2_plot () {
+
+
+    const response = await fetch('/api/BS_seek2_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handleBitmapperBS_plot () {
+
+
+    const response = await fetch('/api/BitmapperBS_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async handlegemBS_plot () {
+
+
+    const response = await fetch('/api/gemBS_plot', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.text();
+
+    console.log(body)
+
+    this.setState({buttonState: 'loading'})
+    // make asynchronous call
+    setTimeout(() => {
+      this.setState({buttonState: 'success'})
+    }, 3000)
+  }
+
+  async test (a) {
+    console.log(this.value)
+
+  }
 
   async handle () {
-    await fetch('/api/handle', {
+    const response = await fetch('/api/handle', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({node:this.node})
+      body: JSON.stringify({value:this.value,method:this.method})
     });
+    const body = await response.text();
 
+    console.log(body)
 
     this.setState({buttonState: 'loading'})
     // make asynchronous call
@@ -188,7 +555,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBismark} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -205,7 +572,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBWA_METH} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -222,7 +589,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBS_seek2} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -239,7 +606,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBitmapperBS} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -262,7 +629,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handlegemBS} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -290,7 +657,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBismark_extract} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -313,7 +680,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBWA_METH_extract} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -336,7 +703,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBS_seek2_extract} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -359,7 +726,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBitmapperBS_extract} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -373,7 +740,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBismark_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -383,7 +750,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBismark_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -393,7 +760,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBWA_METH_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -403,7 +770,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBWA_METH_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -413,7 +780,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBS_seek2_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -423,7 +790,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBS_seek2_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -433,7 +800,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBitmapperBS_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -443,7 +810,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBitmapperBS_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -453,7 +820,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton onClick={this.handleBitmapperBS_plot} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>

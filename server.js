@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const { spawn, exec } = require('child_process');
-const socketio = require('socket.io')(9000);
+const socketio = require('socket.io')(2000);
 const cors = require('cors')
 
 const fileUpload = require('express-fileupload');
@@ -42,7 +42,21 @@ socketio.on('connection', function(socket){
 	console.log('connection')
 });
 
-function output(ls) {
+app.post('/api/handle', (req, res) => {
+  var str = ''
+
+
+  switch(req.body.node) {
+    case "trim":
+      str = 'trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/eric_liu/pipeline/trim /home/eric_liu/pipeline/uploads/test1.fastq /home/eric_liu/pipeline/uploads/test2.fastq'
+      break;
+    case 'bismark':
+      console.log('bismark');
+      break;
+  }
+
+  const ls  = exec(str)
+
   ls.stdout.on('data', (data) => {
 
     console.log(`${data}`)
@@ -50,7 +64,7 @@ function output(ls) {
   });
 
   ls.stderr.on('data', (data) => {
-
+    console.log(`${data}`)
     socketio.emit('msg',`stderr: ${data}`);
 
   });
@@ -60,21 +74,5 @@ function output(ls) {
     console.log(`child process exited with code ${code}`);
     res.send({ express: 'Hello From close' });
   });
-}
-
-app.post('/api/handle', (req, res) => {
-  var str = ''
-  console.log(req.body.node)
-
-  switch(req.body.node) {
-    case "trim":
-      str = 'trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/eric_liu/pipeline/trim /home/eric_liu/pipeline/uploads/test1.fastq /home/eric_liu/pipeline/uploads/test2.fastq'
-      const ls  = exec(str)
-      output(str)
-      break;
-    case 'bismark':
-      console.log('bismark');
-      break;
-  }
 
 });
