@@ -68,15 +68,12 @@ class App extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({node:this.node})
+    }).then((response) => {
+      this.setState({buttonState: 'success'})
     });
 
 
-    this.setState({buttonState: 'loading'})
-    // make asynchronous call
-    setTimeout(() => {
-      this.setState({buttonState: 'success'})
-    }, 3000)
-
+    this.setState({buttonState: 'loading'});
   }
 
   render() {
