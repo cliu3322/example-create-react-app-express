@@ -31,15 +31,6 @@ class App extends Component {
       data =>
       {
         this.addMessage(<div>{data}</div>);
-        // this.setState(state => {
-        //   console.log(state.messages)
-        //   const messages = state.messages.push(<div>aa</div>)
-        //   return {
-        //     messages
-        //   }
-        // }, () => {
-        //           console.log(this.state);
-        //       })
       }
     );
 
@@ -188,7 +179,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bismark_alignment"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -205,7 +196,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_alignment"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -222,7 +213,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_alignment"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -239,7 +230,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_alignment"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -262,7 +253,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_alignment"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
