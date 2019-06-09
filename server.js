@@ -42,19 +42,7 @@ socketio.on('connection', function(socket){
 	console.log('connection')
 });
 
-
-app.post('/api/handle', (req, res) => {
-  const ls = ''
-  console.log(req.body.node)
-
-  switch(req.body.node) {
-    case "trim":
-      ls = exec('trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/eric_liu/pipeline/trim /home/eric_liu/pipeline/uploads/test1.fastq /home/eric_liu/pipeline/uploads/test2.fastq')
-      break;
-    case 'bismark'
-      ls = exec('print');
-      break;
-
+function output(ls) {
   ls.stdout.on('data', (data) => {
 
     console.log(`${data}`)
@@ -62,7 +50,7 @@ app.post('/api/handle', (req, res) => {
   });
 
   ls.stderr.on('data', (data) => {
-    console.log(`${data}`))
+
     socketio.emit('msg',`stderr: ${data}`);
 
   });
@@ -72,4 +60,21 @@ app.post('/api/handle', (req, res) => {
     console.log(`child process exited with code ${code}`);
     res.send({ express: 'Hello From close' });
   });
+}
+
+app.post('/api/handle', (req, res) => {
+  var str = ''
+  console.log(req.body.node)
+
+  switch(req.body.node) {
+    case "trim":
+      str = 'trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/eric_liu/pipeline/trim /home/eric_liu/pipeline/uploads/test1.fastq /home/eric_liu/pipeline/uploads/test2.fastq'
+      const ls  = exec(str)
+      output(str)
+      break;
+    case 'bismark':
+      console.log('bismark');
+      break;
+  }
+
 });
