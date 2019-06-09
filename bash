@@ -1,12 +1,26 @@
+MethylDackel extract /datadrive/hg38.fa --CHH --CHG /home/eric_liu/pipeline/BSresult/test.sort.bam
+# ##writing to prefix:'/home/eric_liu/pipeline/BSresult/test.sort'
+# [fai_fetch_seq] The sequence "chrEBV" not found
+# [fai_fetch_seq] The sequence "chrEBV" not found
+# faidx_fetch_seq returned -2 while trying to fetch the sequence for tid chrEBV:0-171823!
+# Note that the output will be truncated!
 
 
-goleft indexcov --d /home/eric_liu/pipeline/BWA/output /home/eric_liu/pipeline/BWA/bwa_test.sort.bam
+##bitmapperBS same
+
+goleft indexcov --d /home/eric_liu/pipeline/BWA/goleftoutput /home/eric_liu/pipeline/BWA/bwa_test.sort.bam
+
+MethylDackel extract /datadrive/hg38.fa --CHH --CHG /home/eric_liu/pipeline/BWA/bwa_test.sort.bam
 
 samtools index /home/eric_liu/pipeline/BWA/bwa_test.sort.bam
 
 picard -Xmx32G SortSam INPUT= /home/eric_liu/pipeline/BWA/bwa_test.filter.bam OUTPUT=/home/eric_liu/pipeline/BWA/bwa_test.sort.bam SORT_ORDER=coordinate
 
 samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/BWA/bwa_test.sam > /home/eric_liu/pipeline/BWA/bwa_test.filter.bam
+
+
+
+
 
 bismark_methylation_extractor --bedGraph --gzip --CX /home/eric_liu/pipeline/test_direction_result/test2_val_2_bismark_bt2_pe.filter.bam -o /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/
 
@@ -18,6 +32,8 @@ gemBS call
 gemBS extract
 gemBS map-report
 gemBS call-report
+
+##biology meaning
 
 
 bitmapperBS --search /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --sensitive -e 0.1 --seq1 /home/eric_liu/pipeline/trim/test1_val_1.fq --seq2 /home/eric_liu/pipeline/trim/test2_val_2.fq --pe --bam -o /home/eric_liu/pipeline/bitmapperResult/test_bitmapper.bam
@@ -42,4 +58,3 @@ bwameth.py index /datadrive/hg38.fa
 
 
 gemBS prepare -c /home/eric_liu/pipeline/gembsprepare/example.conf -t /home/eric_liu/pipeline/gembsprepare/example.csv
-## where is the fucking input

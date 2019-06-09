@@ -235,17 +235,11 @@ class App extends Component {
               <ArcherElement
                 id="gemBS"
                 relations={[{
-                  targetId: 'gembs-plot',
+                  targetId: 'gembs-extract',
                   targetAnchor: 'top',
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
-                },{
-                  targetId: 'gembs-goleft',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
                 }]}
               >
                 <div style={boxStyle}>gemBS</div>
@@ -278,7 +272,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"Bismark_extract"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -301,7 +295,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_extract"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -324,7 +318,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_extract"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -347,12 +341,34 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_extract"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
               </ArcherElement>
-              <div></div>
+              <ArcherElement
+                id="gembs-extract"
+                relations={[{
+                  targetId: 'gembs-plot',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }, {
+                  targetId: 'gembs-goleft',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                }]}
+              >
+                <div style={boxStyle}>gemBS</div>
+                <div style={boxStyle}>
+                  <ProgressButton node ={"gemBS_extract"} onClick={this.handle} state={this.state.buttonState}>
+                    GO!
+                  </ProgressButton>
+                </div>
+              </ArcherElement>
           </div>
 
           <div style={rowStyle}>
@@ -361,7 +377,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"Bismark_goleft"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -371,7 +387,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"Bismark_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -381,7 +397,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_goleft"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -391,7 +407,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -401,7 +417,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_goleft"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -411,7 +427,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -421,7 +437,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_goleft"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -431,7 +447,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -439,9 +455,9 @@ class App extends Component {
               <ArcherElement
                 id="gembs-goleft"
               >
-                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_report"} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -449,9 +465,9 @@ class App extends Component {
               <ArcherElement
                 id="gembs-plot"
               >
-                <div style={boxStyle}>BitmapperBS</div>
+                <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handle} value ={"gembs"} method={"plot"} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_correlation_plot"} onClick={this.handle} value ={"gembs"} method={"plot"} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
