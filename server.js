@@ -45,6 +45,7 @@ socketio.on('connection', function(socket){
 app.post('/api/handle', (req, res) => {
   var str = ''
 
+  console.log(req.body.node)
 
   switch(req.body.node) {
     case "trim":
