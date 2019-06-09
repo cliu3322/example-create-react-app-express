@@ -44,14 +44,15 @@ socketio.on('connection', function(socket){
 
 
 app.post('/api/handle', (req, res) => {
-  req.body.node
   const ls = ''
+  console.log(req.body.node)
 
   switch(req.body.node) {
     case "trim":
       const ls = exec('trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/eric_liu/pipeline/trim /home/eric_liu/pipeline/uploads/test1.fastq /home/eric_liu/pipeline/uploads/test2.fastq')
       break;
     case 'bismark'
+      const ls = exec('print');
       break;
 
   ls.stdout.on('data', (data) => {

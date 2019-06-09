@@ -526,7 +526,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Trim</div>
                 <div style={boxStyle}>
-                  <ProgressButton onClick={this.handleTrim} state={this.state.buttonState}>
+                  <ProgressButton node ={"trim"} onClick={this.handleTrim} state={this.state.buttonState}>
                     Trim!
                   </ProgressButton>
                 </div>
