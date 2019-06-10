@@ -1,12 +1,40 @@
+bedtools intersect -a /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed -b /home/eric_liu/pipeline/BWA/test.bed -wa -wb > /home/eric_liu/pipeline/intersect/1.bed
+bedtools intersect -a /home/eric_liu/pipeline/BSresult/test.bed -b /home/eric_liu/pipeline/intersect/1.bed -wa -wb > /home/eric_liu/pipeline/intersect/2.bed
+bedtools intersect -a /home/eric_liu/pipeline/bitmapperResult/test.bed -b /home/eric_liu/pipeline/intersect/2.bed -wa -wb > /home/eric_liu/pipeline/intersect/3.bed
+bedtools intersect -a /home/eric_liu/pipeline/gembsresult/test.bed -b /home/eric_liu/pipeline/intersect/3.bed -wa -wb > /home/eric_liu/pipeline/intersect/intersect.bed
+
+awk '{print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $9 "\t" $14 "\t" $19 "\t" $24}' /home/eric_liu/pipeline/intersect/intersect.bed > /home/eric_liu/pipeline/intersect/correlation.bed
+sed "1i Sample5 Sample4 Sample3 Sample2 Sample1" /home/eric_liu/pipeline/intersect/correlation.bed > /home/eric_liu/pipeline/intersect/correlation.txt
+
+python /home/eric_liu/pipeline/txt_to_npz.py /home/eric_liu/pipeline/intersect/correlation.txt
+# Error message
+# Traceback (most recent call last):
+#   File "/home/eric_liu/pipeline/txt_to_npz.py", line 8, in <module>
+#     matrix = np.loadtxt(file, skiprows=1)
+#   File "/home/eric_liu/.local/lib/python3.6/site-packages/numpy/lib/npyio.py", line 1086, in loadtxt
+#     next(fh)
+# StopIteration
+
+plotCorrelation -in /home/eric_liu/pipeline/intersect/correlation.txt.npz -c spearman -p heatmap -o /home/eric_liu/pipeline/intersect/output.pdf --plotNumbers
+
+
+sed '1d' /home/eric_liu/pipeline/gembsresult/extract/HG001_LAB01_REP01/HG001_LAB01_REP01_cpg.bed | awk '{print $1 "\t" $2 "\t" $3 "\t" $11/100 "\t" $14}' > /home/eric_liu/pipeline/gembsresult/test.bed
+
+gunzip /home/eric_liu/pipeline/gembsresult/extract/HG001_LAB01_REP01/HG001_LAB01_REP01_cpg.bed.gz
+
+
+awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_liu/pipeline/bitmapperResult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/bitmapperResult/test.bed
+
+sed '1d' | awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_liu/pipeline/BSresult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BSresult/test.bed
+
+sed '1d' | awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_liu/pipeline/BWA/bwa_test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BWA/test.bed
+##sed will stuck the system |
+
+awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed
+## no zero
+gunzip /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz
+
 MethylDackel extract /datadrive/hg38.fa --CHH --CHG /home/eric_liu/pipeline/BSresult/test.sort.bam
-# ##writing to prefix:'/home/eric_liu/pipeline/BSresult/test.sort'
-# [fai_fetch_seq] The sequence "chrEBV" not found
-# [fai_fetch_seq] The sequence "chrEBV" not found
-# faidx_fetch_seq returned -2 while trying to fetch the sequence for tid chrEBV:0-171823!
-# Note that the output will be truncated!
-
-
-##bitmapperBS same
 
 goleft indexcov --d /home/eric_liu/pipeline/BWA/goleftoutput /home/eric_liu/pipeline/BWA/bwa_test.sort.bam
 
