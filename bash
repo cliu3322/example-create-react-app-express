@@ -20,7 +20,7 @@ plotCorrelation -in /home/eric_liu/pipeline/intersect/correlation.txt.npz -c spe
 
 sed '1d' /home/eric_liu/pipeline/gembsresult/extract/HG001_LAB01_REP01/HG001_LAB01_REP01_cpg.bed | awk '{print $1 "\t" $2 "\t" $3 "\t" $11/100 "\t" $14}' > /home/eric_liu/pipeline/gembsresult/test.bed
 
-gunzip /home/eric_liu/pipeline/gembsresult/extract/HG001_LAB01_REP01/HG001_LAB01_REP01_cpg.bed.gz
+gunzip -f /home/eric_liu/pipeline/gembsresult/extract/HG001_LAB01_REP01/HG001_LAB01_REP01_cpg.bed.gz
 
 
 awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_liu/pipeline/bitmapperResult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/bitmapperResult/test.bed
@@ -32,7 +32,7 @@ sed '1d' | awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_li
 
 awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed
 ## no zero
-gunzip /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz
+gunzip -f /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz
 
 MethylDackel extract /datadrive/hg38.fa --CHH --CHG /home/eric_liu/pipeline/BSresult/test.sort.bam
 
@@ -86,3 +86,8 @@ bwameth.py index /datadrive/hg38.fa
 
 
 gemBS prepare -c /home/eric_liu/pipeline/gembsprepare/example.conf -t /home/eric_liu/pipeline/gembsprepare/example.csv
+
+
+
+
+gunzip -f /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz  && awk '{print $1 "	" $2 "	" $3 "	" $4/100 "	" $5+$6}' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed
