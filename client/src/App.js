@@ -384,6 +384,11 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="Bismark-plot"
+                relations={[{
+                  targetId: 'intersect',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }]}
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
@@ -404,6 +409,11 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="BWA-METH-plot"
+                relations={[{
+                  targetId: 'intersect',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }]}
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
@@ -424,6 +434,11 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="BS_seek2-plot"
+                relations={[{
+                  targetId: 'intersect',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }]}
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
@@ -444,6 +459,11 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="BitmapperBS-plot"
+                relations={[{
+                  targetId: 'intersect',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }]}
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
@@ -464,6 +484,11 @@ class App extends Component {
               </ArcherElement>
               <ArcherElement
                 id="gembs-plot"
+                relations={[{
+                  targetId: 'intersect',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }]}
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
@@ -473,6 +498,24 @@ class App extends Component {
                 </div>
               </ArcherElement>
 
+          </div>
+
+          <div style={rootStyle}>
+            <div style={rowStyle}>
+              <ArcherElement
+                id="intersect"
+                relations={[]}
+              >
+                <div style={boxStyle}>Correlation Plot</div>
+                <div style={boxStyle}>
+                  <ProgressButton node ={"intersect"} onClick={this.handle} state={this.state.buttonState}>
+                    Intersect
+                  </ProgressButton>
+                </div>
+                { this.state.trimreport }
+              </ArcherElement>
+
+            </div>
           </div>
 
         </ArcherContainer>
