@@ -88,6 +88,6 @@ bwameth.py index /datadrive/hg38.fa
 gemBS prepare -c /home/eric_liu/pipeline/gembsprepare/example.conf -t /home/eric_liu/pipeline/gembsprepare/example.csv
 
 
-
+          /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz
 
 gunzip -f /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz  && awk '{print $1 "	" $2 "	" $3 "	" $4/100 "	" $5+$6}' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed
