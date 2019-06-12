@@ -115,18 +115,20 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'gemBS call-report';
       break;
     case 'Bismark_correlation_plot':
-      str = 'gunzip /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz';
-      str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\t" $5+$6}\' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed';
+      //str = 'gunzip /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz';
+      //str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed';
+
+      str = ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed';
       //confirm
       break;
     case 'bwa_correlation_plot':
-      str = 'awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' /home/eric_liu/pipeline/BWA/bwa_test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BWA/test.bed';
+      str = 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/BWA/bwa_test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BWA/test.bed';
       break;
     case 'bsseek2_correlation_plot':
-      str = 'awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' /home/eric_liu/pipeline/BSresult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BSresult/test.bed';
+      str = 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/BSresult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BSresult/test.bed';
       break;
     case 'bitmapperBS_correlation_plot':
-      str = 'awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' /home/eric_liu/pipeline/bitmapperResult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/bitmapperResult/test.bed';
+      str = 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/bitmapperResult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/bitmapperResult/test.bed';
       break;
     case 'gemBS_correlation_plot':
       str = 'sed \'1d\' /home/eric_liu/pipeline/gembsresult/extract/HG001_LAB01_REP01/HG001_LAB01_REP01_cpg.bed | awk \'{print $1 "\t" $2 "\t" $3 "\t" $11/100 "\t" $14}\' > /home/eric_liu/pipeline/gembsresult/test.bed';
@@ -137,7 +139,7 @@ app.post('/api/handle', (req, res) => {
       str += ' && ' +'bedtools intersect -a /home/eric_liu/pipeline/bitmapperResult/test.bed -b /home/eric_liu/pipeline/intersect/2.bed -wa -wb > /home/eric_liu/pipeline/intersect/3.bed'
       str += ' && ' +'bedtools intersect -a /home/eric_liu/pipeline/gembsresult/test.bed -b /home/eric_liu/pipeline/intersect/3.bed -wa -wb > /home/eric_liu/pipeline/intersect/intersect.bed'
 
-      str += ' && ' +'awk \'{print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $9 "\t" $14 "\t" $19 "\t" $24}\' /home/eric_liu/pipeline/intersect/intersect.bed > /home/eric_liu/pipeline/intersect/correlation.bed'
+      str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4 "\\t" $9 "\\t" $14 "\\t" $19 "\\t" $24}\' /home/eric_liu/pipeline/intersect/intersect.bed > /home/eric_liu/pipeline/intersect/correlation.bed'
       str += ' && ' +'sed "1i Sample5 Sample4 Sample3 Sample2 Sample1" /home/eric_liu/pipeline/intersect/correlation.bed > /home/eric_liu/pipeline/intersect/correlation.txt'
 
       str += ' && ' +'python /home/eric_liu/pipeline/txt_to_npz.py /home/eric_liu/pipeline/intersect/correlation.txt'
