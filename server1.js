@@ -30,6 +30,12 @@ app.post('/api/world', (req, res) => {
   console.log('name',req.body.filename)
 
   let uploadFile = req.files.file;
+
+
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+
   uploadFile.mv(`/home/eric_liu/pipeline/uploads/${req.files.file.name}`,function(err) {
     if (err) {
       return res.send(err)

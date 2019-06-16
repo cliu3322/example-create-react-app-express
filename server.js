@@ -42,25 +42,44 @@ socketio.on('connection', function(socket){
 	console.log('connection')
 });
 
+app.post('/api/world', (req, res) => {
+
+  console.log('name',req.body.filename)
+
+  let uploadFile = req.files.file;
+
+
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+
+  uploadFile.mv(`/home/eric_liu/pipeline/uploads/${req.files.file.name}`,function(err) {
+    if (err) {
+      return res.send(err)
+    }
+    res.json({file:req.files.file.name})
+  })
+});
+
 app.post('/api/handle', (req, res) => {
   var str = ''
 
-
+  console.log(req.body.project)
   switch(req.body.node) {
     case "trim":
       str = 'trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/eric_liu/pipeline/trim /home/eric_liu/pipeline/uploads/test1.fastq /home/eric_liu/pipeline/uploads/test2.fastq'
       break;
     case 'bismark_alignment':
-      str = 'bismark /datadrive -o /home/eric_liu/pipeline/test_direction_result -2 /home/eric_liu/pipeline/trim/test1_val_1.fq -1 /home/eric_liu/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
+      str = 'bismark /datadrive -o /home/eric_liu/pipeline/bismarkResult/test.bam -2 /home/eric_liu/pipeline/trim/test1_val_1.fq -1 /home/eric_liu/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
       break;
     case 'bwa_alignment':
-      str = 'bwameth.py --threads 16 --reference /datadrive/hg38.fa /home/eric_liu/pipeline/trim/test1_val_1.fq /home/eric_liu/pipeline/trim/test2_val_2.fq > /home/eric_liu/pipeline/BWA/test.sam'
+      str = 'bwameth.py --threads 16 --reference /datadrive/hg38.fa /home/eric_liu/pipeline/trim/test1_val_1.fq /home/eric_liu/pipeline/trim/test2_val_2.fq > /home/eric_liu/pipeline/bwaResult/test.sam'
       break;
     case 'bsseek2_alignment':
-      str = 'bs_seeker2-align.py -1 /home/eric_liu/pipeline/trim/test1_val_1.fq -2 /home/eric_liu/pipeline/trim/test2_val_2.fq --aligner=bowtie2 --bt2-p 19 --bt2--mm -o /home/eric_liu/pipeline/BSresult/test_bs2.bam -f bam -g /datadrive/hg38_bs2/grch38_core_and_bs_controls.fa -d /datadrive/hg38_bs2 --temp_dir=/home/eric_liu/pipeline/temp'
+      str = 'bs_seeker2-align.py -1 /home/eric_liu/pipeline/trim/test1_val_1.fq -2 /home/eric_liu/pipeline/trim/test2_val_2.fq --aligner=bowtie2 --bt2-p 19 --bt2--mm -o /home/eric_liu/pipeline/BSresult/test.bam -f bam -g /datadrive/hg38_bs2/grch38_core_and_bs_controls.fa -d /datadrive/hg38_bs2 --temp_dir=/home/eric_liu/pipeline/temp'
       break;
     case 'bitmapperBS_alignment':
-      str = 'bitmapperBS --search /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --sensitive -e 0.1 --seq1 /home/eric_liu/pipeline/trim/test1_val_1.fq --seq2 /home/eric_liu/pipeline/trim/test2_val_2.fq --pe --bam -o /home/eric_liu/pipeline/bitmapperResult/test_bitmapper.bam'
+      str = 'bitmapperBS --search /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --sensitive -e 0.1 --seq1 /home/eric_liu/pipeline/trim/test1_val_1.fq --seq2 /home/eric_liu/pipeline/trim/test2_val_2.fq --pe --bam -o /home/eric_liu/pipeline/bitmapperResult/test.bam'
       break;
     case 'gemBS_alignment':
       str = 'gemBS prepare -c /home/eric_liu/pipeline/gembsprepare/example.conf -t /home/eric_liu/pipeline/gembsprepare/example.csv'
@@ -68,23 +87,23 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'gemBS call';
       break;
     case 'Bismark_extract':
-      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/test_direction_result/test2_val_2_bismark_bt2_pe.bam > /home/eric_liu/pipeline/test_direction_result/test2_val_2_bismark_bt2_pe.filter.bam';
-      str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --CX /home/eric_liu/pipeline/test_direction_result/test2_val_2_bismark_bt2_pe.filter.bam -o /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/';
+      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/bismarkResult/test2_val_2_bismark_bt2_pe.bam > /home/eric_liu/pipeline/bismarkResult/test.filter.bam';
+      str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --CX /home/eric_liu/pipeline/bismarkResult/test.filter.bam -o /home/eric_liu/pipeline/bismarkResult/bismark_methylation_extractor/';
       break;
     case 'bwa_extract':
-      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/BWA/test.sam > /home/eric_liu/pipeline/BWA/test.filter.bam';
-      str += ' && '+'picard -Xmx32G SortSam INPUT= /home/eric_liu/pipeline/BWA/test.filter.bam OUTPUT=/home/eric_liu/pipeline/BWA/test.sort.bam SORT_ORDER=coordinate';
-      str += ' && '+'samtools index /home/eric_liu/pipeline/BWA/test.sort.bam';
-      str += ' && '+'MethylDackel extract /datadrive/hg38.fa --CHH --CHG /home/eric_liu/pipeline/BWA/test.sort.bam';
+      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/bwaResult/test.sam > /home/eric_liu/pipeline/bwaResult/test.filter.bam';
+      str += ' && '+'picard -Xmx32G SortSam INPUT= /home/eric_liu/pipeline/bwaResult/test.filter.bam OUTPUT=/home/eric_liu/pipeline/bwaResult/test.sort.bam SORT_ORDER=coordinate';
+      str += ' && '+'samtools index /home/eric_liu/pipeline/bwaResult/test.sort.bam';
+      str += ' && '+'MethylDackel extract /datadrive/hg38.fa --CHH --CHG /home/eric_liu/pipeline/bwaResult/test.sort.bam';
       break;
     case 'bsseek2_extract':
-      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/BSresult/test_bs2.bam > /home/eric_liu/pipeline/BSresult/test.filter.bam';
+      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/BSresult/test.bam > /home/eric_liu/pipeline/BSresult/test.filter.bam';
       str += ' && '+'picard -Xmx32G SortSam INPUT= /home/eric_liu/pipeline/BSresult/test.filter.bam OUTPUT=/home/eric_liu/pipeline/BSresult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index /home/eric_liu/pipeline/BSresult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive//hg38_bs2/grch38_core_and_bs_controls.fa --CHH --CHG /home/eric_liu/pipeline/BSresult/test.sort.bam';
       break;
     case 'bitmapperBS_extract':
-      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/bitmapperResult/test_bitmapper.bam > /home/eric_liu/pipeline/bitmapperResult/test.filter.bam';
+      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/bitmapperResult/test.bam > /home/eric_liu/pipeline/bitmapperResult/test.filter.bam';
       str += ' && '+'picard -Xmx32G SortSam INPUT= /home/eric_liu/pipeline/bitmapperResult/test.filter.bam OUTPUT=/home/eric_liu/pipeline/bitmapperResult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index /home/eric_liu/pipeline/bitmapperResult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --CHH --CHG /home/eric_liu/pipeline/bitmapperResult/test.sort.bam';
@@ -98,11 +117,11 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'gemBS extract';
       break;
     case 'Bismark_goleft':
-      str = 'goleft indexcov --d /home/eric_liu/pipeline/BWA/goleftoutput /home/eric_liu/pipeline/test_direction_result/test2_val_2_bismark_bt2_pe.filter.bam';
+      str = 'goleft indexcov --d /home/eric_liu/pipeline/bwaResult/goleftoutput /home/eric_liu/pipeline/bismarkResult/test2_val_2_bismark_bt2_pe.filter.bam';
       //confirm
       break;
     case 'bwa_goleft':
-      str = 'goleft indexcov --d /home/eric_liu/pipeline/BWA/test.sort.bam';
+      str = 'goleft indexcov --d /home/eric_liu/pipeline/bwaResult/test.sort.bam';
       break;
     case 'bsseek2_goleft':
       str = 'goleft indexcov --d /home/eric_liu/pipeline/BSresult/test.sort.bam';
@@ -115,14 +134,13 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'gemBS call-report';
       break;
     case 'Bismark_correlation_plot':
-      //str = 'gunzip /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz';
-      //str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed';
+      str = 'gunzip /home/eric_liu/pipeline/bismarkResult/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz';
 
-      str = 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed';
+      str += ' ; ' + 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/bismarkResult/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/bismarkResult/bismark_methylation_extractor/test.bismark.bed';
       //confirm
       break;
     case 'bwa_correlation_plot':
-      str = 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/BWA/bwa_test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BWA/test.bed';
+      str = 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/bwaResult/bwa_test.sort_CpG.bedGraph > /home/eric_liu/pipeline/bwaResult/test.bed';
       break;
     case 'bsseek2_correlation_plot':
       str = 'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' /home/eric_liu/pipeline/BSresult/test.sort_CpG.bedGraph > /home/eric_liu/pipeline/BSresult/test.bed';
@@ -134,7 +152,7 @@ app.post('/api/handle', (req, res) => {
       str = 'sed \'1d\' /home/eric_liu/pipeline/gembsresult/extract/HG001_LAB01_REP01/HG001_LAB01_REP01_cpg.bed | awk \'{print $1 "\t" $2 "\t" $3 "\t" $11/100 "\t" $14}\' > /home/eric_liu/pipeline/gembsresult/test.bed';
       break;
     case 'intersect':
-      str = 'bedtools intersect -a /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed -b /home/eric_liu/pipeline/BWA/test.bed -wa -wb > /home/eric_liu/pipeline/intersect/1.bed'
+      str = 'bedtools intersect -a /home/eric_liu/pipeline/bismarkResult/bismark_methylation_extractor/test.bismark.bed -b /home/eric_liu/pipeline/bwaResult/test.bed -wa -wb > /home/eric_liu/pipeline/intersect/1.bed'
       str += ' && ' +'bedtools intersect -a /home/eric_liu/pipeline/BSresult/test.bed -b /home/eric_liu/pipeline/intersect/1.bed -wa -wb > /home/eric_liu/pipeline/intersect/2.bed'
       str += ' && ' +'bedtools intersect -a /home/eric_liu/pipeline/bitmapperResult/test.bed -b /home/eric_liu/pipeline/intersect/2.bed -wa -wb > /home/eric_liu/pipeline/intersect/3.bed'
       str += ' && ' +'bedtools intersect -a /home/eric_liu/pipeline/gembsresult/test.bed -b /home/eric_liu/pipeline/intersect/3.bed -wa -wb > /home/eric_liu/pipeline/intersect/intersect.bed'

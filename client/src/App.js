@@ -19,9 +19,10 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {buttonState: '',response:'sdf', messages:[], trimreport:[]};
+    this.state = {project:'project1', buttonState: '', response:'sdf', messages:[], trimreport:[]};
 
     this.handleUploadImage = this.handleUploadImage.bind(this);
+
   }
 
 
@@ -62,12 +63,14 @@ class App extends Component {
 
 
   async handle () {
+    console.log(this.node)
+    console.log(this.project)
     await fetch('/api/handle', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({node:this.node})
+      body: JSON.stringify({node:this.node, project:this.state.project})
     }).then((response) => {
       this.setState({buttonState: 'success'})
     });
@@ -83,32 +86,56 @@ class App extends Component {
         { this.state.messages }
       </div>
         <ArcherContainer strokeColor='red' >
-
           <div style={rootStyle}>
             <ArcherElement
-              id="upload"
+              id="project"
               relations={[{
-                targetId: 'trim',
+                targetId: 'upload',
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
               }]}
             >
-              <div style={boxStyle}>upload</div>
+              <div style={boxStyle}>Choose your project</div>
               <div style={boxStyle}>
-                  <form onSubmit={this.handleUploadImage}>
+                  <form onSubmit={this.chooseProject}>
                     <div>
-                      <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+                      <input ref={(ref) => { this.newproject = ref; }} type="text" placeholder="existing project" />
                     </div>
-                    <div>
-                      <input ref={(ref) => { this.fileName = ref; }} type="text" placeholder="Enter the desired name of file" />
-                    </div>
+
                     <br />
                     <div>
-                      <button>Upload</button>
+                      <button>select the project</button>
                     </div>
                   </form>
               </div>
             </ArcherElement>
+          </div>
+
+          <div style={rootStyle}>
+            <div style={rowStyle}>
+              <ArcherElement
+                id="upload"
+                relations={[{
+                  targetId: 'trim',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                }]}
+              >
+                <div style={boxStyle}>upload</div>
+                <div style={boxStyle}>
+                    <form onSubmit={this.handleUploadImage}>
+                      <div>
+                        <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+                      </div>
+
+                      <br />
+                      <div>
+                        <button>Upload</button>
+                      </div>
+                    </form>
+                </div>
+              </ArcherElement>
+            </div>
           </div>
 
           <div style={rootStyle}>
@@ -153,7 +180,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Trim</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"trim"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"trim"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     Trim!
                   </ProgressButton>
                 </div>
@@ -176,7 +203,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bismark_alignment"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bismark_alignment"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -193,7 +220,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bwa_alignment"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_alignment"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -210,7 +237,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bsseek2_alignment"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_alignment"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -227,7 +254,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bitmapperBS_alignment"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_alignment"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -244,7 +271,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"gemBS_alignment"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_alignment"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -261,18 +288,29 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>plot</div>,
-                },
-                {
+                },{
                   targetId: 'Bismark-goleft',
                   targetAnchor: 'top',
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                },{
+                  targetId: 'coverage',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>annotation-plot</div>,
+                },{
+                  targetId: 'region_analysis',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>annotation-plot</div>,
                 }]}
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"Bismark_extract"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"Bismark_extract"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -291,11 +329,23 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                },{
+                  targetId: 'coverage',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>annotation-plot</div>,
+                },{
+                  targetId: 'region_analysis',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>annotation-plot</div>,
                 }]}
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bwa_extract"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_extract"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -314,11 +364,23 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                },{
+                  targetId: 'coverage',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }, {
+                  targetId: 'region_analysis',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
                 }]}
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bsseek2_extract"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_extract"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -337,11 +399,23 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                },{
+                  targetId: 'coverage',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }, {
+                  targetId: 'region_analysis',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
                 }]}
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bitmapperBS_extract"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_extract"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -360,11 +434,23 @@ class App extends Component {
                   sourceAnchor: 'bottom',
                   style: { strokeColor: 'blue', strokeWidth: 1 },
                   label: <div style={{ marginTop: '-20px' }}>goleft</div>,
+                }, {
+                  targetId: 'coverage',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>plot</div>,
+                }, {
+                  targetId: 'region_analysis',
+                  targetAnchor: 'top',
+                  sourceAnchor: 'bottom',
+                  style: { strokeColor: 'blue', strokeWidth: 1 },
+                  label: <div style={{ marginTop: '-20px' }}>goleft</div>,
                 }]}
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"gemBS_extract"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_extract"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -377,7 +463,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"Bismark_goleft"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"Bismark_goleft"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -392,7 +478,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"Bismark_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"Bismark_correlation_plot"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -402,7 +488,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bwa_goleft"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_goleft"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -417,7 +503,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bwa_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_correlation_plot"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -427,7 +513,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bsseek2_goleft"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_goleft"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -442,7 +528,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bsseek2_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_correlation_plot"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -452,7 +538,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bitmapperBS_goleft"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_goleft"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -467,7 +553,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bitmapperBS_correlation_plot"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_correlation_plot"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -477,7 +563,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"gemBS_report"} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_report"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -492,7 +578,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"gemBS_correlation_plot"} onClick={this.handle} value ={"gembs"} method={"plot"} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_correlation_plot"} project = {this.state.project} onClick={this.handle} value ={"gembs"} method={"plot"} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -500,23 +586,62 @@ class App extends Component {
 
           </div>
 
-          <div style={rootStyle}>
-            <div style={rowStyle}>
-              <ArcherElement
-                id="intersect"
-                relations={[]}
-              >
-                <div style={boxStyle}>Correlation Plot</div>
-                <div style={boxStyle}>
-                  <ProgressButton node ={"intersect"} onClick={this.handle} state={this.state.buttonState}>
-                    Intersect
-                  </ProgressButton>
-                </div>
-                { this.state.trimreport }
-              </ArcherElement>
+          <div style={rowStyle}>
 
-            </div>
+            <ArcherElement
+              id="intersect"
+              relations={[]}
+            >
+              <div style={boxStyle}>Correlation Plot</div>
+              <div style={boxStyle}>
+                <ProgressButton node ={"intersect"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
+                  Intersect
+                </ProgressButton>
+              </div>
+              { this.state.trimreport }
+            </ArcherElement>
+
+            <ArcherElement
+              id="coverage"
+              relations={[]}
+            >
+              <div style={boxStyle}>Correlation Plot</div>
+              <div style={boxStyle}>
+                <ProgressButton node ={"intersect"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
+                  Coverage
+                </ProgressButton>
+              </div>
+              { this.state.trimreport }
+            </ArcherElement>
+
+            <ArcherElement
+              id="annotation"
+              relations={[]}
+            >
+              <div style={boxStyle}>annotation</div>
+              <div style={boxStyle}>
+                <ProgressButton node ={"intersect"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
+                  Annotation
+                </ProgressButton>
+              </div>
+              { this.state.trimreport }
+            </ArcherElement>
+
+            <ArcherElement
+              id="region_analysis"
+              relations={[]}
+            >
+              <div style={boxStyle}>Differential Methylation Region Analysis</div>
+              <div style={boxStyle}>
+                <ProgressButton node ={"intersect"} project = {this.state.project} onClick={this.handle} state={this.state.buttonState}>
+                  Region Analysis
+                </ProgressButton>
+              </div>
+              { this.state.trimreport }
+            </ArcherElement>
+
           </div>
+
 
         </ArcherContainer>
       </div>

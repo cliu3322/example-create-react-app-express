@@ -91,3 +91,9 @@ gemBS prepare -c /home/eric_liu/pipeline/gembsprepare/example.conf -t /home/eric
           /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz
 
 gunzip -f /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz  && awk '{print $1 "	" $2 "	" $3 "	" $4/100 "	" $5+$6}' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed
+
+
+awk '{print $4 "\t" $9}' /home/eric_liu/pipeline/intersect/1.bed > /home/eric_liu/pipeline/intersect/correlation.bed
+
+
+sed "1i Sample5 Sample4" /home/eric_liu/pipeline/intersect/correlation.bed > /home/eric_liu/pipeline/intersect/correlation.txt
