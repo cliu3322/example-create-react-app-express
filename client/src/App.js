@@ -33,7 +33,6 @@ class App extends Component {
     this.state = {projects:[], buttonState: '', response:'sdf', messages:[], trimreport:[], selectedOption: null};
 
     this.handleUploadImage = this.handleUploadImage.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
@@ -93,13 +92,13 @@ class App extends Component {
     if (this.project == null) {
       toast("Please choose a project")
     } else {
-
+      console.log(this.project)
       await fetch('/api/handle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({node:this.node})
+        body: JSON.stringify({node:this.node, project:this.project})
       }).then((response) => {
         this.setState({buttonState: 'success'})
       });
@@ -116,20 +115,10 @@ class App extends Component {
 
   handleNewprojectChange = event => {
 
-    this.setState({newprojectname: event.target.value});
+    this.setState({selectedOption: {label:event.target.value, value: event.target.value}});
 
   };
 
-  handleSubmit(event) {
-
-    console.log(this.state.newprojectname)
-    fetch('/api/creatnewproject', {
-      method: 'POST',
-      body: this.state.newprojectname,
-    }).then((response) => {
-      console.log(response)
-    });
-  }
 
   render() {
     return (
@@ -160,9 +149,8 @@ class App extends Component {
                     </div>
                     <div>
                       {this.state.selectedOption && this.state.selectedOption.value === 'new'?
-                        (<form onSubmit={this.handleSubmit}>
+                        (<form>
                           <input type="text" value={this.state.value} onChange={this.handleNewprojectChange}/>
-                          <input type="submit" value="Submit" />
                         </form>):null
                       }
                     </div>

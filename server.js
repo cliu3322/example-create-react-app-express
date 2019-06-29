@@ -49,14 +49,12 @@ socketio.on('connection', function(socket){
 const isDirectory = source => lstatSync(source).isDirectory()
 const getDirectories = source =>
   readdirSync(source).map(name => join(source, name)).filter(isDirectory)
-
+var directorystr = '/Users/chunyiliu/projects/'
 app.get('/api/projects', (req, res) => {
-  var str = '/Users/chunyiliu/projects/'
-  var list = getDirectories(str)
 
-  var result = list.map(x => x.replace(str,''))
+  var list = getDirectories(directorystr)
 
-  console.log(result)
+  var result = list.map(x => x.replace(directorystr,''))
 
   res.json({result})
 });
@@ -80,14 +78,17 @@ app.post('/api/world', (req, res) => {
 });
 
 
-app.post('/api/creatnewproject', (req, res) => {
-  console.log(req.body)
-
-  res.json({res:'req.files.file.name'})
-
-});
 
 app.post('/api/handle', (req, res) => {
+
+  var list = getDirectories(directorystr)
+
+  var result = list.map(x => x.replace(directorystr,''))
+  console.log(req.body.project)
+
+  if(!result.includes(req.body.project.value)) {
+    fs.mkdirSync(directorystr+dir);
+  }
   var str = ''
   switch(req.body.node) {
     case "trim":
