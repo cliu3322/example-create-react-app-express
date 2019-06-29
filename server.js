@@ -8,6 +8,8 @@ const cors = require('cors')
 
 const fileUpload = require('express-fileupload');
 
+const { lstatSync, readdirSync } = require('fs')
+const { join } = require('path')
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -42,9 +44,25 @@ socketio.on('connection', function(socket){
 	console.log('connection')
 });
 
+
+//projects
+const isDirectory = source => lstatSync(source).isDirectory()
+const getDirectories = source =>
+  readdirSync(source).map(name => join(source, name)).filter(isDirectory)
+
+app.get('/api/projects', (req, res) => {
+  var str = '/Users/chunyiliu/projects/'
+  var list = getDirectories(str)
+
+  var result = list.map(x => x.replace(str,''))
+
+  console.log(result)
+
+  res.json({result})
+});
+
 app.post('/api/world', (req, res) => {
 
-  console.log('name',req.body.filename)
 
   let uploadFile = req.files.file;
 
@@ -61,10 +79,16 @@ app.post('/api/world', (req, res) => {
   })
 });
 
+
+app.post('/api/creatnewproject', (req, res) => {
+  console.log(req.body)
+
+  res.json({res:'req.files.file.name'})
+
+});
+
 app.post('/api/handle', (req, res) => {
   var str = ''
-
-  console.log(req.body.project)
   switch(req.body.node) {
     case "trim":
       str = 'trim_galore -q 20 --stringency 5 --paired --length 20 -o /home/eric_liu/pipeline/trim /home/eric_liu/pipeline/uploads/test1.fastq /home/eric_liu/pipeline/uploads/test2.fastq'

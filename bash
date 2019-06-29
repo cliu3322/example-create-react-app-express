@@ -46,7 +46,7 @@ picard -Xmx32G SortSam INPUT= /home/eric_liu/pipeline/BWA/bwa_test.filter.bam OU
 
 samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 /home/eric_liu/pipeline/BWA/bwa_test.sam > /home/eric_liu/pipeline/BWA/bwa_test.filter.bam
 
-
+gunzip /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov.gz  ; awk '{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}' /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test2_val_2_bismark_bt2_pe.filter.bismark.cov > /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed
 
 
 
