@@ -49,7 +49,7 @@ socketio.on('connection', function(socket){
 const isDirectory = source => lstatSync(source).isDirectory()
 const getDirectories = source =>
   readdirSync(source).map(name => join(source, name)).filter(isDirectory)
-var directorystr = '/Users/chunyiliu/projects/'
+var directorystr = '/datadrive/projects/'
 app.get('/api/projects', (req, res) => {
 
   var list = getDirectories(directorystr)
