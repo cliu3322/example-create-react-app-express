@@ -49,7 +49,12 @@ socketio.on('connection', function(socket){
 const isDirectory = source => lstatSync(source).isDirectory()
 const getDirectories = source =>
   readdirSync(source).map(name => join(source, name)).filter(isDirectory)
+
+
+
 var directorystr = '/datadrive/projects/'
+
+
 app.get('/api/projects', (req, res) => {
 
   var list = getDirectories(directorystr)
@@ -87,7 +92,7 @@ app.post('/api/handle', (req, res) => {
   console.log('project',req.body)
 
   if(!result.includes(req.body.project.value)) {
-    fs.mkdirSync(directorystr+dir);
+    fs.mkdirSync(directorystr+req.body.project.value);
   }
   var str = ''
   switch(req.body.node) {

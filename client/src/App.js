@@ -70,19 +70,46 @@ class App extends Component {
   handleUploadImage(ev) {
     ev.preventDefault();
 
-    const data = new FormData();
-    console.log(this.fileName.value)
-    console.log('file', this.uploadInput.files[0])
-    data.append('file', this.uploadInput.files[0]);
-    data.append('filename', this.fileName.value);
+
+    if (this.project == null) {
+      toast("Please choose a project")
+    } else {
+      if (this.project.value == "new") {
+
+        const data = new FormData();
+        console.log(this.fileName.value)
+        console.log('file', this.uploadInput.files[0])
+        data.append('file', this.uploadInput.files[0]);
+        data.append('filename', this.fileName.value);
+        data.append('project',JSON.stringify({node:this.node, project:this.newproject}))
+
+        fetch('/api/world', {
+          method: 'POST',
+          body: data,
+        }).then((response) => {
+          console.log(response)
+        });
+
+      } else {
+
+        const data = new FormData();
+        console.log(this.fileName.value)
+        console.log('file', this.uploadInput.files[0])
+        data.append('file', this.uploadInput.files[0]);
+        data.append('filename', this.fileName.value);
+        data.append('project',JSON.stringify({node:this.node, project:this.project}))
+
+        fetch('/api/world', {
+          method: 'POST',
+          body: data,
+        }).then((response) => {
+          console.log(response)
+        });
+        
+      }
+    }
 
 
-    fetch('/api/world', {
-      method: 'POST',
-      body: data,
-    }).then((response) => {
-      console.log(response)
-    });
 
   }
 
@@ -115,7 +142,6 @@ class App extends Component {
           this.setState({buttonState: 'success'})
         });
       }
-      this.setState({buttonState: 'loading'});
     }
   }
 
@@ -182,7 +208,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>upload</div>
                 <div style={boxStyle}>
-                    <form onSubmit={this.handleUploadImage}>
+                    <form onSubmit={this.handleUploadImage} project = {this.state.selectedOption} newproject = {this.state.newproject}>
                       <div>
                         <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
                       </div>
