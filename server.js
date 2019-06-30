@@ -70,8 +70,8 @@ app.post('/api/world', (req, res) => {
   var list = getDirectories(directorystr)
 
   var result = list.map(x => x.replace(directorystr,''))
-  console.log('project',req.body.project.project)
-
+  console.log('req',req)
+  console.log('file',req.files.file.name)
   if(!result.includes(req.body.project.value)) {
     fs.mkdirSync(directorystr+req.body.project.value);
   }
