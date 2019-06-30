@@ -70,19 +70,17 @@ class App extends Component {
   handleUploadImage(ev) {
     ev.preventDefault();
 
-    console.log('this.project', this.project)
-    console.log('this.state.selectedOption', this.state.selectedOption)
-    if (this.project == null) {
+    if (this.state.selectedOption== null) {
       toast("Please choose a project")
     } else {
-      if (this.project.value == "new") {
+      if (this.state.selectedOption.value == "new") {
 
         const data = new FormData();
         console.log(this.fileName.value)
         console.log('file', this.uploadInput.files[0])
         data.append('file', this.uploadInput.files[0]);
         data.append('filename', this.fileName.value);
-        data.append('project',JSON.stringify({node:this.node, project:this.newproject}))
+        data.append('project',JSON.stringify({ project:this.state.newproject}))
 
         fetch('/api/world', {
           method: 'POST',
@@ -98,7 +96,7 @@ class App extends Component {
         console.log('file', this.uploadInput.files[0])
         data.append('file', this.uploadInput.files[0]);
         data.append('filename', this.fileName.value);
-        data.append('project',JSON.stringify({node:this.node, project:this.project}))
+        data.append('project',JSON.stringify({project:this.state.selectedOption}))
 
         fetch('/api/world', {
           method: 'POST',
