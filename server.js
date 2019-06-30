@@ -84,7 +84,7 @@ app.post('/api/handle', (req, res) => {
   var list = getDirectories(directorystr)
 
   var result = list.map(x => x.replace(directorystr,''))
-  console.log(req.body.project)
+  console.log('project',req.body)
 
   if(!result.includes(req.body.project.value)) {
     fs.mkdirSync(directorystr+dir);

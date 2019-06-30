@@ -94,6 +94,7 @@ class App extends Component {
     } else {
       if (this.project.value === 'new') {
         this.project = this.newproject
+        console.log(this.project)
       }
 
       await fetch('/api/handle', {
