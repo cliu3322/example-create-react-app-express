@@ -95,22 +95,26 @@ class App extends Component {
       console.log('this.project', this.project)
 
       if (this.project.value == "new") {
-        this.project = this.newproject
-        console.log(this.project)
-        console.log('in')
+        fetch('/api/handle', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({node:this.node, project:this.newproject})
+        }).then((response) => {
+          this.setState({buttonState: 'success'})
+        });
+      } else {
+        fetch('/api/handle', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({node:this.node, project:this.project})
+        }).then((response) => {
+          this.setState({buttonState: 'success'})
+        });
       }
-      console.log('out')
-      fetch('/api/handle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({node:this.node, project:this.project})
-      }).then((response) => {
-        this.setState({buttonState: 'success'})
-      });
-
-
       this.setState({buttonState: 'loading'});
     }
   }
