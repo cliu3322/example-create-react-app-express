@@ -70,7 +70,7 @@ app.post('/api/world', (req, res) => {
   var list = getDirectories(directorystr)
 
   var result = list.map(x => x.replace(directorystr,''))
-  console.log('req',JSON.parse(req.body.project)
+  console.log('req',JSON.parse(req.body.project))
 
   console.log('file',req.files.file.name)
   if(!result.includes(req.body.project.value)) {
