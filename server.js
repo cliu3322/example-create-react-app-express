@@ -65,8 +65,6 @@ app.get('/api/projects', (req, res) => {
 });
 
 app.post('/api/world', (req, res) => {
-  console.log('project', file)
-
   let uploadFile = req.files.file;
 
   var list = getDirectories(directorystr)
