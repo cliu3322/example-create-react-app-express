@@ -97,7 +97,7 @@ class App extends Component {
         console.log('file', this.uploadInput.files[0])
         data.append('file', this.uploadInput.files[0]);
         //data.append('filename', this.fileName.value);
-        data.append('project',this.state.selectedOption)
+        data.append('project1','well')
 
         fetch('/api/world', {
           method: 'POST',
