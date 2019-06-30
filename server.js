@@ -75,6 +75,8 @@ app.post('/api/world', (req, res) => {
     fs.mkdirSync(directorystr+req.body.project);
   }
 
+  console.log(getDirectories(directorystr+req.body.project).map(x => x.replace(directorystr+req.body.project,'')).includes('pipeline'))
+
   if(!getDirectories(directorystr+req.body.project).map(x => x.replace(directorystr+req.body.project,'')).includes('pipeline')) {
     fs.mkdirSync(directorystr+req.body.project+'/pipeline');
   }
