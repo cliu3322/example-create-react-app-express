@@ -92,11 +92,14 @@ class App extends Component {
     if (this.project == null) {
       toast("Please choose a project")
     } else {
+      console.log('this.project', this.project)
+
       if (this.project.value === 'new') {
         this.project = this.newproject
         console.log(this.project)
+        console.log('in')
       }
-
+      console.log('out')
       await fetch('/api/handle', {
         method: 'POST',
         headers: {
