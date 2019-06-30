@@ -81,7 +81,7 @@ class App extends Component {
         data.append('file', this.uploadInput.files[0]);
         //data.append('filename', this.fileName.value);
         console.log('project',this.state.newproject)
-        data.append('project1','well')
+        data.append('project','well')
 
         fetch('/api/world', {
           method: 'POST',
@@ -97,7 +97,7 @@ class App extends Component {
         console.log('file', this.uploadInput.files[0])
         data.append('file', this.uploadInput.files[0]);
         //data.append('filename', this.fileName.value);
-        data.append('project1','well')
+        data.append('project1',this.state.newproject)
 
         fetch('/api/world', {
           method: 'POST',
