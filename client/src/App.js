@@ -86,7 +86,7 @@ class App extends Component {
 
   }
 
-  async handle () {
+  handle () {
 
 
     if (this.project == null) {
@@ -100,7 +100,7 @@ class App extends Component {
         console.log('in')
       }
       console.log('out')
-      await fetch('/api/handle', {
+      fetch('/api/handle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
