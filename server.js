@@ -73,17 +73,12 @@ app.post('/api/world', (req, res) => {
 
   if(!result.includes(req.body.project)) {
     fs.mkdirSync(directorystr+req.body.project);
-    if(!getDirectories(directorystr+req.body.project).includes('pipeline')) {
-      fs.mkdirSync(directorystr+req.body.project+'/pipeline');
-    }
   }
 
-
-
-  if(!result.includes(req.body.project)) {
-    fs.mkdirSync(directorystr+req.body.project);
+  if(!getDirectories(directorystr+req.body.project).includes('pipeline')) {
     fs.mkdirSync(directorystr+req.body.project+'/pipeline');
   }
+
   console.log(`${directorystr+req.body.project}/pipeline/uploads/${req.files.file.name}`)
   uploadFile.mv(`${directorystr+req.body.project}/pipeline/uploads/${req.files.file.name}`,function(err) {
     console.log('inside')
