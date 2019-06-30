@@ -70,7 +70,8 @@ class App extends Component {
   handleUploadImage(ev) {
     ev.preventDefault();
 
-
+    console.log('this.project', this.project)
+    console.log('this.state.selectedOption', this.state.selectedOption)
     if (this.project == null) {
       toast("Please choose a project")
     } else {
@@ -105,7 +106,7 @@ class App extends Component {
         }).then((response) => {
           console.log(response)
         });
-        
+
       }
     }
 
