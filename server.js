@@ -74,8 +74,9 @@ app.post('/api/world', (req, res) => {
   if(!result.includes(req.body.project)) {
     fs.mkdirSync(directorystr+req.body.project);
   }
-
+  console.log(`${directorystr+req.body.project}/pipeline/uploads/${req.files.file.name}`)
   uploadFile.mv(`${directorystr+req.body.project}/pipeline/uploads/${req.files.file.name}`,function(err) {
+    console.log('inside')
     if (err) {
       return res.send(err)
     }
