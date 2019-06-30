@@ -94,7 +94,7 @@ class App extends Component {
     } else {
       console.log('this.project', this.project)
 
-      if (this.project.value === 'new') {
+      if (this.project.value == "new") {
         this.project = this.newproject
         console.log(this.project)
         console.log('in')
