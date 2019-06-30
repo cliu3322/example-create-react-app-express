@@ -69,9 +69,13 @@ app.post('/api/world', (req, res) => {
 
   let uploadFile = req.files.file;
 
+  var list = getDirectories(directorystr)
 
-  if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
+  var result = list.map(x => x.replace(directorystr,''))
+  console.log('project',req.body)
+
+  if(!result.includes(req.body.project.value)) {
+    fs.mkdirSync(directorystr+req.body.project.value);
   }
 
   uploadFile.mv(`/home/eric_liu/pipeline/uploads/${req.files.file.name}`,function(err) {
