@@ -70,12 +70,9 @@ app.post('/api/world', (req, res) => {
   var list = getDirectories(directorystr)
 
   var result = list.map(x => x.replace(directorystr,''))
-  console.log('req',req)
-  console.log('req1',req.body.project1.value)
 
-  console.log('file',req.files.file.name)
-  if(!result.includes(req.body.project.value)) {
-    fs.mkdirSync(directorystr+req.body.project.value);
+  if(!result.includes(req.body.project)) {
+    fs.mkdirSync(directorystr+req.body.project);
   }
 
   uploadFile.mv(`/home/eric_liu/pipeline/uploads/${req.files.file.name}`,function(err) {
