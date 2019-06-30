@@ -76,10 +76,10 @@ class App extends Component {
       if (this.state.selectedOption.value == "new") {
 
         const data = new FormData();
-        console.log(this.fileName.value)
+
         console.log('file', this.uploadInput.files[0])
         data.append('file', this.uploadInput.files[0]);
-        data.append('filename', this.fileName.value);
+        //data.append('filename', this.fileName.value);
         data.append('project',JSON.stringify({ project:this.state.newproject}))
 
         fetch('/api/world', {
@@ -92,10 +92,10 @@ class App extends Component {
       } else {
 
         const data = new FormData();
-        console.log(this.fileName.value)
+        //console.log('filename',this.fileName.value)
         console.log('file', this.uploadInput.files[0])
         data.append('file', this.uploadInput.files[0]);
-        data.append('filename', this.fileName.value);
+        //data.append('filename', this.fileName.value);
         data.append('project',JSON.stringify({project:this.state.selectedOption}))
 
         fetch('/api/world', {
@@ -146,7 +146,7 @@ class App extends Component {
 
   handleChange = selectedOption => {
     this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
+
   };
 
   handleNewprojectChange = event => {
@@ -207,7 +207,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>upload</div>
                 <div style={boxStyle}>
-                    <form onSubmit={this.handleUploadImage} project = {this.state.selectedOption} newproject = {this.state.newproject}>
+                    <form onSubmit={this.handleUploadImage}>
                       <div>
                         <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
                       </div>
