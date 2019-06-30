@@ -73,7 +73,7 @@ class App extends Component {
     if (this.state.selectedOption== null) {
       toast("Please choose a project")
     } else {
-      if (this.state.selectedOption.value == "new") {
+      if (this.state.selectedOption.value === "new") {
 
         const data = new FormData();
 
@@ -121,7 +121,7 @@ class App extends Component {
     } else {
       console.log('this.project', this.project)
 
-      if (this.project.value == "new") {
+      if (this.project.value === "new") {
         fetch('/api/handle', {
           method: 'POST',
           headers: {

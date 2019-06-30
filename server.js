@@ -75,7 +75,7 @@ app.post('/api/world', (req, res) => {
     fs.mkdirSync(directorystr+req.body.project);
   }
 
-  uploadFile.mv(`/home/eric_liu/pipeline/uploads/${req.files.file.name}`,function(err) {
+  uploadFile.mv(`${directorystr+req.body.project}/pipeline/uploads/${req.files.file.name}`,function(err) {
     if (err) {
       return res.send(err)
     }
