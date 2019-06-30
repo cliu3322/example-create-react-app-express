@@ -92,7 +92,10 @@ class App extends Component {
     if (this.project == null) {
       toast("Please choose a project")
     } else {
-      console.log(this.project)
+      if (this.project.value === 'new') {
+        this.project = this.newproject
+      }
+
       await fetch('/api/handle', {
         method: 'POST',
         headers: {
@@ -115,7 +118,7 @@ class App extends Component {
 
   handleNewprojectChange = event => {
 
-    this.setState({selectedOption: {label:event.target.value, value: event.target.value}});
+    this.setState({newproject: {label:event.target.value, value: event.target.value}});
 
   };
 
@@ -228,7 +231,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Trim</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"trim"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"trim"} project = {this.state.selectedOption} newproject = {this.state.newproject} onClick={this.handle} state={this.state.buttonState}>
                     Trim!
                   </ProgressButton>
                 </div>
