@@ -128,7 +128,7 @@ class App extends Component {
     } else {
       console.log('this.project', this.project)
 
-      if (this.project.value === "new") {
+      if (this.state.selectedOption.value === "new") {
         fetch('/api/handle', {
           method: 'POST',
           headers: {
