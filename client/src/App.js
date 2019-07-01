@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { ArcherContainer, ArcherElement } from 'react-archer';
-import ProgressButton from 'react-progress-button'
+//import button from 'react-progress-button'
 import Select from 'react-select'
 import socketIOClient from "socket.io-client";
 import { ToastContainer, toast } from 'react-toastify';
@@ -37,7 +37,6 @@ class App extends Component {
 
 
     this.trim = React.createRef();
-    this.bismark_alignment = React.createRef();
   }
 
 
@@ -117,10 +116,7 @@ class App extends Component {
 
   }
 
-  handle () {
-
-    console.log(this.refnode.id)
-
+  handle (e) {
 
     if (this.state.selectedOption == null) {
       toast("Please choose a project")
@@ -133,7 +129,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({node:this.refnode.id, project:this.state.selectedOption.value})
+          body: JSON.stringify({node:e.target.id, project:this.state.selectedOption.value})
         }).then((response) => {
           toast("DONE!")
           this.setState({buttonState: 'success'})
@@ -144,7 +140,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({node:this.refnode.id, project:this.state.selectedOption.value})
+          body: JSON.stringify({node:e.target.id, project:this.state.selectedOption.value})
         }).then((response) => {
           toast("DONE!")
           this.setState({buttonState: 'success'})
@@ -297,9 +293,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bismark_alignment"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"bismark_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -314,9 +310,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bwa_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"bwa_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -331,9 +327,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bsseek2_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"bsseek2_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -348,9 +344,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bitmapperBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"bitmapperBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -365,9 +361,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"gemBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"gemBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
           </div>
@@ -380,9 +376,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"Bismark_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"Bismark_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -391,9 +387,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bwa_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"bwa_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -402,9 +398,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bsseek2_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"bsseek2_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -413,9 +409,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bitmapperBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"bitmapperBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
               <ArcherElement
@@ -424,9 +420,9 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"gemBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"gemBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
-                  </ProgressButton>
+                  </button>
                 </div>
               </ArcherElement>
           </div>
