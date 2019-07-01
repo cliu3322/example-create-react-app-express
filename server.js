@@ -153,7 +153,7 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'gemBS call';
       break;
     case 'Bismark_extract':
-      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bismarkResult/test2_val_2_bismark_bt2_pe.bam > ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
+      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.bam > ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
       str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --CX ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/';
       break;
     case 'bwa_extract':
