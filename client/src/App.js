@@ -118,7 +118,7 @@ class App extends Component {
 
   handle () {
 
-    console.log(this.refnode.id)
+    console.log(this.refnode)
     if (this.state.selectedOption == null) {
       toast("Please choose a project")
 
