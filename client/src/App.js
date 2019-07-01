@@ -134,7 +134,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({node:this.refnode.id, project:this.newproject.value})
+          body: JSON.stringify({node:this.refnode.id, project:this.state.selectedOption.value})
         }).then((response) => {
           this.setState({buttonState: 'success'})
         });
@@ -144,7 +144,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({node:this.refnode.id, project:this.project.value})
+          body: JSON.stringify({node:this.refnode.id, project:this.state.selectedOption.value})
         }).then((response) => {
           this.setState({buttonState: 'success'})
         });
