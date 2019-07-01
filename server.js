@@ -78,8 +78,8 @@ app.post('/api/world', (req, res) => {
   if(!getDirectories(directorystr+req.body.project).map(x => x.replace(directorystr+req.body.project+'/','')).includes('pipeline')) {
     fs.mkdirSync(directorystr+req.body.project+'/pipeline');
   }
-  console.log(getDirectories(directorystr+req.body.project).map(x => x.replace(directorystr+req.body.project+'/pipeline/','')))
-  if(!getDirectories(directorystr+req.body.project).map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('uploads')) {
+  console.log(getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')))
+  if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('uploads')) {
     fs.mkdirSync(directorystr+req.body.project+'/pipeline/uploads');
   }
 
