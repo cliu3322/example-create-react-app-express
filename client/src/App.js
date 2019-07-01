@@ -30,10 +30,13 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {projects:[], buttonState: '', response:'sdf', messages:[], trimreport:[], selectedOption: null};
+    this.state = {projects:[], buttonState: '', response:'sdf', messages:[], selectedOption: null};
 
     this.handleUploadImage = this.handleUploadImage.bind(this);
+    this.handle = this.handle.bind(this);
 
+
+    this.trim = React.createRef();
   }
 
 
@@ -81,7 +84,7 @@ class App extends Component {
         data.append('file', this.uploadInput.files[0]);
         //data.append('filename', this.fileName.value);
         console.log('project',this.state.newproject.value)
-        data.append('project','well')
+        data.append('project',this.state.newproject.value)
 
         fetch('/api/world', {
           method: 'POST',
@@ -115,9 +118,14 @@ class App extends Component {
 
   handle () {
 
+    console.log(this.refnode)
+    console.log(this.refnode.id)
+
 
     if (this.project == null) {
       toast("Please choose a project")
+      console.log(this.state)
+      console.log(this)
     } else {
       console.log('this.project', this.project)
 
@@ -143,6 +151,7 @@ class App extends Component {
         });
       }
     }
+
   }
 
   handleChange = selectedOption => {
@@ -265,11 +274,11 @@ class App extends Component {
               >
                 <div style={boxStyle}>Trim</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"trim"} project = {this.state.selectedOption} newproject = {this.state.newproject} onClick={this.handle} state={this.state.buttonState}>
+                  <button id ={"trim"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} newproject = {this.state.newproject} onClick={this.handle} state={this.state.buttonState}>
                     Trim!
-                  </ProgressButton>
+                  </button>
                 </div>
-                { this.state.trimreport }
+
               </ArcherElement>
 
             </div>
