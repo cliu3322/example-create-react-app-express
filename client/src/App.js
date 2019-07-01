@@ -118,7 +118,6 @@ class App extends Component {
 
   handle () {
 
-    console.log(this.refnode)
     console.log(this.refnode.id)
 
 
