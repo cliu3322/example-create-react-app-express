@@ -134,6 +134,7 @@ class App extends Component {
           },
           body: JSON.stringify({node:this.refnode.id, project:this.state.selectedOption.value})
         }).then((response) => {
+          toast("DONE!")
           this.setState({buttonState: 'success'})
         });
       } else {
@@ -144,6 +145,7 @@ class App extends Component {
           },
           body: JSON.stringify({node:this.refnode.id, project:this.state.selectedOption.value})
         }).then((response) => {
+          toast("DONE!")
           this.setState({buttonState: 'success'})
         });
       }
@@ -294,7 +296,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton node ={"bismark_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton id ={"bismark_alignment"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
