@@ -21,8 +21,8 @@
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:5000/",
-  "socketport": "http://localhost:2000/",
-  "socketport1": "52.183.78.102:2000/",
+  "socketport1": "http://localhost:2000/",
+  "socketport": "52.183.78.102:2000/",
   "socketport2": "13.77.147.2452:2000/",
   "socketportold": "10.1.8.51:2000/",
   "browserslist": [
