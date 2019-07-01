@@ -99,7 +99,7 @@ app.post('/api/handle', (req, res) => {
 
   var str = ''
 
-  if(!result.includes(req.body.project)) {
+  if(!getDirectories(directorystr).map(x => x.replace(directorystr,'')).includes(req.body.project)) {
     fs.mkdirSync(directorystr+req.body.project);
   }
 
