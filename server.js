@@ -52,8 +52,8 @@ const getDirectories = source =>
 
 
 
-//var directorystr = '/datadrive/projects/'
-var directorystr = '/Users/chunyiliu/projects'
+var directorystr = '/datadrive/projects/'
+//var directorystr = '/Users/chunyiliu/projects'
 
 app.get('/api/projects', (req, res) => {
 
