@@ -120,7 +120,7 @@ app.post('/api/handle', (req, res) => {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/bismarkResult');
         console.log(directorystr+req.body.project+'/pipeline/bismarkResult')
       }
-      str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.bam -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
+      str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
       break;
     case 'bwa_alignment':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bwaResult')) {
@@ -153,7 +153,7 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'gemBS call';
       break;
     case 'Bismark_extract':
-      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.bam > ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
+      str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bismarkResult/test/test2_val_2_bismark_bt2_pe.bam > ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
       str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --CX ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/';
       break;
     case 'bwa_extract':
