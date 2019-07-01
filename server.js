@@ -116,6 +116,10 @@ app.post('/api/handle', (req, res) => {
       str = 'trim_galore -q 20 --stringency 5 --paired --length 20 -o ' + directorystr+req.body.project+'/pipeline/trim ' + directorystr+req.body.project+'/pipeline/uploads/test1.fastq ' + directorystr+req.body.project+'/pipeline/uploads/test2.fastq'
       break;
     case 'bismark_alignment':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bismarkResult')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/bismarkResult');
+        console.log(directorystr+req.body.project+'/pipeline/bismarkResult')
+      }
       str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.bam -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
       break;
     case 'bwa_alignment':

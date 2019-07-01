@@ -118,15 +118,11 @@ class App extends Component {
 
   handle () {
 
-    console.log(this.refnode.id)
-
 
     if (this.state.selectedOption == null) {
       toast("Please choose a project")
-      console.log(this.state)
-      console.log(this)
+
     } else {
-      console.log('this.project', this.project)
 
       if (this.state.selectedOption.value === "new") {
         fetch('/api/handle', {
