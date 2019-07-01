@@ -118,7 +118,9 @@ class App extends Component {
 
   handle () {
 
-    console.log(this.refnode)
+    console.log(this.refnode.id)
+
+
     if (this.state.selectedOption == null) {
       toast("Please choose a project")
 
@@ -292,7 +294,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bismark_alignment"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bismark_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -309,7 +311,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bwa_alignment"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -326,7 +328,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bsseek2_alignment"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -343,7 +345,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bitmapperBS_alignment"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -360,7 +362,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"gemBS_alignment"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -375,7 +377,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>Bismark</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"Bismark_extract"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"Bismark_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -386,7 +388,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BWA-METH</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bwa_extract"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bwa_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -397,7 +399,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BS_seek2</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bsseek2_extract"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bsseek2_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -408,7 +410,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>BitmapperBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"bitmapperBS_extract"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"bitmapperBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
@@ -419,7 +421,7 @@ class App extends Component {
               >
                 <div style={boxStyle}>gemBS</div>
                 <div style={boxStyle}>
-                  <ProgressButton id ={"gemBS_extract"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                  <ProgressButton node ={"gemBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
                     GO!
                   </ProgressButton>
                 </div>
