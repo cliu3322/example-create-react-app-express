@@ -37,6 +37,7 @@ class App extends Component {
 
 
     this.trim = React.createRef();
+    this.bismark_alignment = React.createRef();
   }
 
 
