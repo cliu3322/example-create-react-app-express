@@ -90,7 +90,7 @@ class App extends Component {
           method: 'POST',
           body: data,
         }).then((response) => {
-          toast(response)
+          toast('upload successfully!')
         });
 
       } else {
@@ -106,7 +106,7 @@ class App extends Component {
           method: 'POST',
           body: data,
         }).then((response) => {
-          toast(response)
+          toast('upload successfully!')
         });
 
       }
@@ -134,7 +134,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({node:this.node, project:this.newproject})
+          body: JSON.stringify({node:this.refnode.id, project:this.newproject.value})
         }).then((response) => {
           this.setState({buttonState: 'success'})
         });
@@ -144,7 +144,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({node:this.node, project:this.project})
+          body: JSON.stringify({node:this.refnode.id, project:this.project.value})
         }).then((response) => {
           this.setState({buttonState: 'success'})
         });
