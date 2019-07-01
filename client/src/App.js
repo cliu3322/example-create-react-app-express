@@ -90,7 +90,7 @@ class App extends Component {
           method: 'POST',
           body: data,
         }).then((response) => {
-          console.log(response)
+          toast(response)
         });
 
       } else {
@@ -106,7 +106,7 @@ class App extends Component {
           method: 'POST',
           body: data,
         }).then((response) => {
-          console.log(response)
+          toast(response)
         });
 
       }
