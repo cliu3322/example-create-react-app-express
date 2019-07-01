@@ -123,12 +123,28 @@ app.post('/api/handle', (req, res) => {
       str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.bam -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
       break;
     case 'bwa_alignment':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bwaResult')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/bwaResult');
+        console.log(directorystr+req.body.project+'/pipeline/bwaResult')
+      }
       str = 'bwameth.py --threads 16 --reference /datadrive/hg38.fa ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq > ' + directorystr+req.body.project+'/pipeline/bwaResult/test.sam'
       break;
     case 'bsseek2_alignment':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('temp')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/temp');
+        console.log(directorystr+req.body.project+'/pipeline/temp')
+      }
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('BSresult')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/BSresult');
+        console.log(directorystr+req.body.project+'/pipeline/BSresult')
+      }
       str = 'bs_seeker2-align.py -1 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -2 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --aligner=bowtie2 --bt2-p 19 --bt2--mm -o ' + directorystr+req.body.project+'/pipeline/BSresult/test.bam -f bam -g /datadrive/hg38_bs2/grch38_core_and_bs_controls.fa -d /datadrive/hg38_bs2 --temp_dir=' + directorystr+req.body.project+'/pipeline/temp'
       break;
     case 'bitmapperBS_alignment':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bitmapperResult')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/bitmapperResult');
+        console.log(directorystr+req.body.project+'/pipeline/bitmapperResult')
+      }
       str = 'bitmapperBS --search /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --sensitive -e 0.1 --seq1 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq --seq2 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --pe --bam -o ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.bam'
       break;
     case 'gemBS_alignment':
