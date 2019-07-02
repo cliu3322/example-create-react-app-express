@@ -269,6 +269,7 @@ app.post('/api/report', (req, res) => {
 
   switch(req.body.report) {
     case "goleft":
+      console.log(getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')))
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('goleft')) {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/goleft');
       }
