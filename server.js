@@ -284,6 +284,11 @@ app.post('/api/report', (req, res) => {
         str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam';
       }
 
+      if (req.body.reportmethod.includes('bs2report')) {
+        fs.copyFileSync(directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam');
+        str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam';
+      }
+
       break;
     case 'intersect':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('intersect')) {
