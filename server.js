@@ -267,13 +267,14 @@ app.post('/api/report', (req, res) => {
     fs.mkdirSync(directorystr+req.body.project+'/pipeline');
   }
 
-  switch(req.body.node) {
+  switch(req.body.report) {
     case "goleft":
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('goleft')) {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/goleft');
       }
-
-      //str += 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/bwaResult/goleftoutput ' + directorystr+req.body.project+'/pipeline/bismarkResult/test2_val_2_bismark_bt2_pe.filter.bam';
+      str = 'pwd'
+      if (req.body.reportmethod.includes('bismarkreport'))
+        str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
 
       break;
     case 'intersect':
