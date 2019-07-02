@@ -276,18 +276,11 @@ app.post('/api/report', (req, res) => {
 
       str = 'goleft indexcov --d '+ directorystr+req.body.project+'/pipeline/goleft'
       if (req.body.reportmethod.includes('bismarkreport')) {
-        fs.copyFile(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam', (err) => {
-          if (err) throw err;
-          console.log('source.txt was copied to destination.txt');
-          str += ' bismark.bam';
-        });
+        fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
 
       }
       if (req.body.reportmethod.includes('bwareport')) {
-        fs.copyFile(directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam', (err) => {
-          if (err) throw err;
-          console.log('source.txt was copied to destination.txt');
-        });
+        fs.copyFileSync(directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam');
         str += ' bwa.bam';
       }
 
