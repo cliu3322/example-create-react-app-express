@@ -276,6 +276,10 @@ app.post('/api/report', (req, res) => {
       str = 'pwd'
       if (req.body.reportmethod.includes('bismarkreport'))
         str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
+      if (req.body.reportmethod.includes('bwareport'))
+        str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bwareport/test.filter.bam';
+      //if (req.body.reportmethod.includes('bs2report'))
+      //  str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bs2report/test.filter.bam';
 
       break;
     case 'intersect':
