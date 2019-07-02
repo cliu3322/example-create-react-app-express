@@ -162,8 +162,8 @@ class App extends Component {
 
   }
 
-  handleChange = selectedReport => {
-    this.setState({ selectedReport });
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
 
   };
 
