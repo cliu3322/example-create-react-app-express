@@ -8,6 +8,7 @@
     "react-d3-tree": "^1.12.3",
     "react-dom": "^16.8.6",
     "react-fileupload-progress": "^0.4.2",
+    "react-loading-overlay": "^1.0.1",
     "react-progress-button": "^5.1.0",
     "react-scripts": "2.0.5",
     "react-select": "^3.0.4",

@@ -7,6 +7,7 @@ import socketIOClient from "socket.io-client";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
+import LoadingOverlay from 'react-loading-overlay';
 
 
 var {socketport} = require('../package.json');
@@ -36,7 +37,8 @@ class App extends Component {
       response:'sdf', messages:[],
       selectedOption: null,
       selectedReport: null,
-      reports: []};
+      reports: [],
+      isActive: false};
 
     this.handleUploadImage = this.handleUploadImage.bind(this);
     this.handle = this.handle.bind(this);
@@ -82,6 +84,7 @@ class App extends Component {
     if (this.state.selectedOption== null) {
       toast("Please choose a project")
     } else {
+      this.setState({isActive: true})
       if (this.state.selectedOption.value === "new") {
 
         const data = new FormData();
@@ -97,10 +100,11 @@ class App extends Component {
           body: data,
         }).then((response) => {
           toast('upload successfully!')
+          this.setState({isActive: false})
         });
 
       } else {
-
+        this.setState({isActive: true})
         const data = new FormData();
         //console.log('filename',this.fileName.value)
         console.log('file', this.uploadInput.files[0])
@@ -113,6 +117,7 @@ class App extends Component {
           body: data,
         }).then((response) => {
           toast('upload successfully!')
+          this.setState({isActive: false})
         });
 
       }
@@ -128,7 +133,7 @@ class App extends Component {
       toast("Please choose a project")
 
     } else {
-
+      this.setState({isActive: true})
       if (this.state.selectedOption.value === "new") {
         fetch('/api/handle', {
           method: 'POST',
@@ -138,9 +143,10 @@ class App extends Component {
           body: JSON.stringify({node:e.target.id, project:this.state.selectedOption.value})
         }).then((response) => {
           toast("DONE!")
-          this.setState({buttonState: 'success'})
+          this.setState({isActive: false})
         });
       } else {
+        this.setState({isActive: true})
         fetch('/api/handle', {
           method: 'POST',
           headers: {
@@ -149,7 +155,7 @@ class App extends Component {
           body: JSON.stringify({node:e.target.id, project:this.state.selectedOption.value})
         }).then((response) => {
           toast("DONE!")
-          this.setState({buttonState: 'success'})
+          this.setState({isActive: false})
         });
       }
     }
@@ -182,7 +188,7 @@ class App extends Component {
       toast("Please choose a project")
 
     } else {
-
+      this.setState({isActive: true})
       if (this.state.selectedOption.value === "new") {
         fetch('/api/report', {
           method: 'POST',
@@ -192,9 +198,10 @@ class App extends Component {
           body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports})
         }).then((response) => {
           toast("DONE!")
-          this.setState({buttonState: 'success'})
+          this.setState({isActive: false})
         });
       } else {
+        this.setState({isActive: true})
         fetch('/api/report', {
           method: 'POST',
           headers: {
@@ -203,7 +210,7 @@ class App extends Component {
           body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports})
         }).then((response) => {
           toast("DONE!")
-          this.setState({buttonState: 'success'})
+          this.setState({isActive: false})
         });
       }
     }
@@ -220,308 +227,315 @@ class App extends Component {
   render() {
     return (
       <div>
-      <ToastContainer />
-      <div style={scrollStyle}>
-        { this.state.messages }
-      </div>
-        <ArcherContainer strokeColor='red' >
-          <div style={rootStyle}>
-            <ArcherElement
-              id="project"
-              relations={[{
-                targetId: 'upload',
-                targetAnchor: 'top',
-                sourceAnchor: 'bottom',
-              }]}
-            >
-              <div style={boxStyle}>Choose your project</div>
-              <div style={boxStyle}>
 
-                    <div>
-                      <Select
-                        value={this.state.selectedOption}
-                        options={this.state.projects}
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <div>
-                      {this.state.selectedOption && this.state.selectedOption.value === 'new'?
-                        (<form>
-                          <input type="text" value={this.state.value} onChange={this.handleNewprojectChange}/>
-                        </form>):null
-                      }
-                    </div>
-
-              </div>
-            </ArcherElement>
-          </div>
-
-          <div style={rootStyle}>
-            <div style={rowStyle}>
+        <ToastContainer />
+        <div style={scrollStyle}>
+          { this.state.messages }
+        </div>
+        <LoadingOverlay
+        active={this.state.isActive}
+        spinner
+        text='Loading your content...'
+        >
+          <ArcherContainer strokeColor='red' >
+            <div style={rootStyle}>
               <ArcherElement
-                id="upload"
+                id="project"
                 relations={[{
-                  targetId: 'trim',
+                  targetId: 'upload',
                   targetAnchor: 'top',
                   sourceAnchor: 'bottom',
                 }]}
               >
-                <div style={boxStyle}>upload</div>
+                <div style={boxStyle}>Choose your project</div>
                 <div style={boxStyle}>
-                    <form onSubmit={this.handleUploadImage}>
-                      <div>
-                        <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
-                      </div>
 
-                      <br />
-                      <div>
-                        <button>Upload</button>
-                      </div>
-                    </form>
-                </div>
-              </ArcherElement>
-            </div>
-          </div>
-
-          <div style={rootStyle}>
-            <div style={rowStyle}>
-              <ArcherElement
-                id="trim"
-                relations={[{
-                  targetId: 'Bismark',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
-                },
-                {
-                  targetId: 'BWA-METH',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
-                },
-                {
-                  targetId: 'BS_seek2',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
-                },
-                {
-                  targetId: 'BitmapperBS',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
-                },
-                {
-                  targetId: 'gemBS',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
-                }]}
-              >
-                <div style={boxStyle}>Trim</div>
-                <div style={boxStyle}>
-                  <button id ={"trim"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} newproject = {this.state.newproject} onClick={this.handle} state={this.state.buttonState}>
-                    Trim!
-                  </button>
-                </div>
-
-              </ArcherElement>
-
-            </div>
-          </div>
-          <div style={rowStyle}>
-
-              <ArcherElement
-                id="Bismark"
-                relations={[{
-                  targetId: 'Bismark-extract',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
-                }]}
-              >
-                <div style={boxStyle}>Bismark</div>
-                <div style={boxStyle}>
-                  <button id ={"bismark_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="BWA-METH"
-                relations={[{
-                  targetId: 'BWA-METH-extract',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
-                }]}
-              >
-                <div style={boxStyle}>BWA-METH</div>
-                <div style={boxStyle}>
-                  <button id ={"bwa_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="BS_seek2"
-                relations={[{
-                  targetId: 'BS_seek2-extract',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
-                }]}
-              >
-                <div style={boxStyle}>BS_seek2</div>
-                <div style={boxStyle}>
-                  <button id ={"bsseek2_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="BitmapperBS"
-                relations={[{
-                  targetId: 'BitmapperBS-extract',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
-                }]}
-              >
-                <div style={boxStyle}>BitmapperBS</div>
-                <div style={boxStyle}>
-                  <button id ={"bitmapperBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="gemBS"
-                relations={[{
-                  targetId: 'gembs-extract',
-                  targetAnchor: 'top',
-                  sourceAnchor: 'bottom',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>extraction</div>,
-                }]}
-              >
-                <div style={boxStyle}>gemBS</div>
-                <div style={boxStyle}>
-                  <button id ={"gemBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-          </div>
-
-          <div style={rowStyle}>
-
-              <ArcherElement
-                id="Bismark-extract"
-                relations={[]}
-              >
-                <div style={boxStyle}>Bismark</div>
-                <div style={boxStyle}>
-                  <button id ={"Bismark_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="BWA-METH-extract"
-                relations={[]}
-              >
-                <div style={boxStyle}>BWA-METH</div>
-                <div style={boxStyle}>
-                  <button id ={"bwa_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="BS_seek2-extract"
-                relations={[]}
-              >
-                <div style={boxStyle}>BS_seek2</div>
-                <div style={boxStyle}>
-                  <button id ={"bsseek2_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="BitmapperBS-extract"
-                relations={[]}
-              >
-                <div style={boxStyle}>BitmapperBS</div>
-                <div style={boxStyle}>
-                  <button id ={"bitmapperBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-              <ArcherElement
-                id="gembs-extract"
-                relations={[]}
-              >
-                <div style={boxStyle}>gemBS</div>
-                <div style={boxStyle}>
-                  <button id ={"gemBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
-                    GO!
-                  </button>
-                </div>
-              </ArcherElement>
-          </div>
-          <div style={rootStyle}>
-            <div style={rowStyle}>
-                <ArcherElement
-                  id="goleft"
-                >
-                  <div style={boxStyle}>Report</div>
-                  <div style={boxStyle}>
-                    <form onSubmit={this.handlereport}>
                       <div>
                         <Select
-                          value={this.state.selectedReport}
-                          onChange={this.handleChangeReport}
-                          options={reportoptions}
+                          value={this.state.selectedOption}
+                          options={this.state.projects}
+                          onChange={this.handleChange}
                         />
-
                       </div>
-                      <CheckboxGroup
-                        name="reports"
-                        value={this.state.reports}
-                        onChange={this.reportmethodChanged}>
-
-                        <Checkbox value="bismarkreport"/> Bismark<br />
-                        <Checkbox value="bwareport"/> BWA<br />
-                        <Checkbox value="bs2report"/> BS2<br />
-                        <Checkbox value="bitmapperBSreport"/> BitmapperBS<br />
-                        <Checkbox value="gemBS"/> gemBS<br />
-                      </CheckboxGroup>
-                      <br />
                       <div>
-                        <button>choose</button>
+                        {this.state.selectedOption && this.state.selectedOption.value === 'new'?
+                          (<form>
+                            <input type="text" value={this.state.value} onChange={this.handleNewprojectChange}/>
+                          </form>):null
+                        }
                       </div>
-                    </form>
+
+                </div>
+              </ArcherElement>
+            </div>
+
+            <div style={rootStyle}>
+              <div style={rowStyle}>
+                <ArcherElement
+                  id="upload"
+                  relations={[{
+                    targetId: 'trim',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                  }]}
+                >
+                  <div style={boxStyle}>upload</div>
+                  <div style={boxStyle}>
+                      <form onSubmit={this.handleUploadImage}>
+                        <div>
+                          <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+                        </div>
+
+                        <br />
+                        <div>
+                          <button>Upload</button>
+                        </div>
+                      </form>
                   </div>
                 </ArcherElement>
-
+              </div>
             </div>
-          </div>
+
+            <div style={rootStyle}>
+              <div style={rowStyle}>
+                <ArcherElement
+                  id="trim"
+                  relations={[{
+                    targetId: 'Bismark',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                  },
+                  {
+                    targetId: 'BWA-METH',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                  },
+                  {
+                    targetId: 'BS_seek2',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                  },
+                  {
+                    targetId: 'BitmapperBS',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                  },
+                  {
+                    targetId: 'gemBS',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>Allignment</div>,
+                  }]}
+                >
+                  <div style={boxStyle}>Trim</div>
+                  <div style={boxStyle}>
+                    <button id ={"trim"} ref={(ref) => { this.refnode = ref; }} project = {this.state.selectedOption} newproject = {this.state.newproject} onClick={this.handle} state={this.state.buttonState}>
+                      Trim!
+                    </button>
+                  </div>
+
+                </ArcherElement>
+
+              </div>
+            </div>
+            <div style={rowStyle}>
+
+                <ArcherElement
+                  id="Bismark"
+                  relations={[{
+                    targetId: 'Bismark-extract',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                  }]}
+                >
+                  <div style={boxStyle}>Bismark</div>
+                  <div style={boxStyle}>
+                    <button id ={"bismark_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="BWA-METH"
+                  relations={[{
+                    targetId: 'BWA-METH-extract',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                  }]}
+                >
+                  <div style={boxStyle}>BWA-METH</div>
+                  <div style={boxStyle}>
+                    <button id ={"bwa_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="BS_seek2"
+                  relations={[{
+                    targetId: 'BS_seek2-extract',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                  }]}
+                >
+                  <div style={boxStyle}>BS_seek2</div>
+                  <div style={boxStyle}>
+                    <button id ={"bsseek2_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="BitmapperBS"
+                  relations={[{
+                    targetId: 'BitmapperBS-extract',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                  }]}
+                >
+                  <div style={boxStyle}>BitmapperBS</div>
+                  <div style={boxStyle}>
+                    <button id ={"bitmapperBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="gemBS"
+                  relations={[{
+                    targetId: 'gembs-extract',
+                    targetAnchor: 'top',
+                    sourceAnchor: 'bottom',
+                    style: { strokeColor: 'blue', strokeWidth: 1 },
+                    label: <div style={{ marginTop: '-20px' }}>extraction</div>,
+                  }]}
+                >
+                  <div style={boxStyle}>gemBS</div>
+                  <div style={boxStyle}>
+                    <button id ={"gemBS_alignment"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+            </div>
+
+            <div style={rowStyle}>
+
+                <ArcherElement
+                  id="Bismark-extract"
+                  relations={[]}
+                >
+                  <div style={boxStyle}>Bismark</div>
+                  <div style={boxStyle}>
+                    <button id ={"Bismark_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="BWA-METH-extract"
+                  relations={[]}
+                >
+                  <div style={boxStyle}>BWA-METH</div>
+                  <div style={boxStyle}>
+                    <button id ={"bwa_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="BS_seek2-extract"
+                  relations={[]}
+                >
+                  <div style={boxStyle}>BS_seek2</div>
+                  <div style={boxStyle}>
+                    <button id ={"bsseek2_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="BitmapperBS-extract"
+                  relations={[]}
+                >
+                  <div style={boxStyle}>BitmapperBS</div>
+                  <div style={boxStyle}>
+                    <button id ={"bitmapperBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+                <ArcherElement
+                  id="gembs-extract"
+                  relations={[]}
+                >
+                  <div style={boxStyle}>gemBS</div>
+                  <div style={boxStyle}>
+                    <button id ={"gemBS_extract"} project = {this.state.selectedOption} onClick={this.handle} state={this.state.buttonState}>
+                      GO!
+                    </button>
+                  </div>
+                </ArcherElement>
+            </div>
+            <div style={rootStyle}>
+              <div style={rowStyle}>
+                  <ArcherElement
+                    id="goleft"
+                  >
+                    <div style={boxStyle}>Report</div>
+                    <div style={boxStyle}>
+                      <form onSubmit={this.handlereport}>
+                        <div>
+                          <Select
+                            value={this.state.selectedReport}
+                            onChange={this.handleChangeReport}
+                            options={reportoptions}
+                          />
+
+                        </div>
+                        <CheckboxGroup
+                          name="reports"
+                          value={this.state.reports}
+                          onChange={this.reportmethodChanged}>
+
+                          <Checkbox value="bismarkreport"/> Bismark<br />
+                          <Checkbox value="bwareport"/> BWA<br />
+                          <Checkbox value="bs2report"/> BS2<br />
+                          <Checkbox value="bitmapperBSreport"/> BitmapperBS<br />
+                          <Checkbox value="gemBS"/> gemBS<br />
+                        </CheckboxGroup>
+                        <br />
+                        <div>
+                          <button>choose</button>
+                        </div>
+                      </form>
+                    </div>
+                  </ArcherElement>
+
+              </div>
+            </div>
 
 
 
-        </ArcherContainer>
+          </ArcherContainer>
+        </LoadingOverlay>
       </div>
     );
   }
