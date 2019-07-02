@@ -196,7 +196,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports})
+          body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports, project:this.state.selectedOption.value})
         }).then((response) => {
           toast("DONE!")
           this.setState({isActive: false})
@@ -208,7 +208,7 @@ class App extends Component {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports})
+          body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports, project:this.state.selectedOption.value})
         }).then((response) => {
           toast("DONE!")
           this.setState({isActive: false})
