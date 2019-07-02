@@ -142,7 +142,7 @@ class App extends Component {
           },
           body: JSON.stringify({node:e.target.id, project:this.state.selectedOption.value})
         }).then((response) => {
-          toast("DONE!")
+          console.log(response)
           this.setState({isActive: false})
         });
       } else {
@@ -154,6 +154,7 @@ class App extends Component {
           },
           body: JSON.stringify({node:e.target.id, project:this.state.selectedOption.value})
         }).then((response) => {
+          console.log(response)
           toast("DONE!")
           this.setState({isActive: false})
         });
