@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+fsPromises = require('fs').promises;
 const { spawn, exec } = require('child_process');
 const socketio = require('socket.io')(2000);
 const cors = require('cors')
@@ -276,11 +277,11 @@ app.post('/api/report', (req, res) => {
 
       str = 'pwd'
       if (req.body.reportmethod.includes('bismarkreport')) {
-        fs.promises.copyFile(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
+        fsPromises.copyFile(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
         //str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
       }
       if (req.body.reportmethod.includes('bwareport')) {
-        fs.promises.copyFile(directorystr+req.body.project+'/pipeline/bwaResult/test.sorted.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam');
+        fsPromises.copyFile(directorystr+req.body.project+'/pipeline/bwaResult/test.sorted.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam');
         //str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bwaResult/test.filter.bam';
       }
 
