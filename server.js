@@ -277,11 +277,11 @@ app.post('/api/report', (req, res) => {
       str = 'goleft indexcov --d '+ directorystr+req.body.project+'/pipeline/goleft'
       if (req.body.reportmethod.includes('bismarkreport')) {
         fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
-        str += ' bismark.bam';
+        str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam';
       }
       if (req.body.reportmethod.includes('bwareport')) {
         fs.copyFileSync(directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam');
-        str += ' bwa.bam';
+        str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam';
       }
 
       break;
