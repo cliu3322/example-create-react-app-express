@@ -273,13 +273,16 @@ app.post('/api/report', (req, res) => {
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('goleft')) {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/goleft');
       }
+
       str = 'pwd'
-      if (req.body.reportmethod.includes('bismarkreport'))
-        str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
-      if (req.body.reportmethod.includes('bwareport'))
-        str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bwaResult/test.filter.bam';
-      //if (req.body.reportmethod.includes('bs2report'))
-      //  str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/BSresult/test.filter.bam';
+      if (req.body.reportmethod.includes('bismarkreport')) {
+        fs.promises.copyFile(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
+        //str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
+      }
+      if (req.body.reportmethod.includes('bwareport')) {
+        fs.promises.copyFile(directorystr+req.body.project+'/pipeline/bwaResult/test.sorted.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam');
+        //str += ' && ' + 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/goleft ' + directorystr+req.body.project+'/pipeline/bwaResult/test.filter.bam';
+      }
 
       break;
     case 'intersect':
