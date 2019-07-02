@@ -281,11 +281,13 @@ app.post('/api/report', (req, res) => {
       }
       if (req.body.reportmethod.includes('bwareport')) {
         fs.copyFileSync(directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam');
+        fs.copyFileSync(directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam.bai',  directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam.bai');
         str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bwa.bam';
       }
 
       if (req.body.reportmethod.includes('bs2report')) {
         fs.copyFileSync(directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam');
+        fs.copyFileSync(directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam.bai',  directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam.bai');
         str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam';
       }
 
