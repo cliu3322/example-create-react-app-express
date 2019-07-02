@@ -253,3 +253,69 @@ app.post('/api/handle', (req, res) => {
   });
 
 });
+
+
+app.post('/api/report', (req, res) => {
+
+  var str = ''
+
+  if(!getDirectories(directorystr).map(x => x.replace(directorystr,'')).includes(req.body.project)) {
+    fs.mkdirSync(directorystr+req.body.project);
+  }
+
+  if(!getDirectories(directorystr+req.body.project).map(x => x.replace(directorystr+req.body.project+'/','')).includes('pipeline')) {
+    fs.mkdirSync(directorystr+req.body.project+'/pipeline');
+  }
+
+  switch(req.body.node) {
+    case "goleft":
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('goleft')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/goleft');
+      }
+
+      //str += 'goleft indexcov --d ' + directorystr+req.body.project+'/pipeline/bwaResult/goleftoutput ' + directorystr+req.body.project+'/pipeline/bismarkResult/test2_val_2_bismark_bt2_pe.filter.bam';
+
+      break;
+    case 'intersect':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('intersect')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/intersect');
+      }
+      //str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
+      break;
+    case 'coverageplot':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('coverageplot')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/coverageplot');
+      }
+      //str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
+      break;
+    case 'annotationplot':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bismarkResult')) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/bismarkResult');
+        console.log(directorystr+req.body.project+'/pipeline/bismarkResult')
+      }
+      //str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
+      break;
+
+    }
+    console.log(str)
+    const ls  = exec(str)
+
+    ls.stdout.on('data', (data) => {
+
+      console.log(`${data}`)
+      socketio.emit('msg',`${data}`)
+    });
+
+    ls.stderr.on('data', (data) => {
+      console.log(`${data}`)
+      socketio.emit('msg',`${data}`);
+
+    });
+
+    ls.on('close', (code) => {
+      socketio.emit('msg',`close: child process exited with code ${code}`)
+      console.log(`child process exited with code ${code}`);
+      res.send({ express: 'Hello From close' });
+    });
+
+  });

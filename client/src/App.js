@@ -6,6 +6,7 @@ import Select from 'react-select'
 import socketIOClient from "socket.io-client";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 
 
 var {socketport} = require('../package.json');
@@ -22,19 +23,24 @@ const scrollStyle = { margin: '0 10px 20px 10px', padding: '10px', height:'220px
 const reportoptions = [
   { value: 'goleft', label: 'goleft' },
   { value: 'intersect', label: 'intersect plot' },
-  { value: 'Coverageplot', label: 'Coverage plot' },
-  { value: 'Annotationplot', label: 'Annotation plot' },
+  { value: 'coverageplot', label: 'Coverage plot' },
+  { value: 'annotationplot', label: 'Annotation plot' },
 ];
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {projects:[], buttonState: '', response:'sdf', messages:[], selectedOption: null};
+    this.state = {projects:[],
+      buttonState: '',
+      response:'sdf', messages:[],
+      selectedOption: null,
+      selectedReport: null,
+      reports: []};
 
     this.handleUploadImage = this.handleUploadImage.bind(this);
     this.handle = this.handle.bind(this);
-
+    this.handlereport = this.handlereport.bind(this);
 
     this.trim = React.createRef();
   }
@@ -150,8 +156,14 @@ class App extends Component {
 
   }
 
-  handleChange = selectedOption => {
-    this.setState({ selectedOption });
+  handleChange = selectedReport => {
+    this.setState({ selectedReport });
+
+  };
+
+  handleChangeReport = selectedReport => {
+
+    this.setState({ selectedReport });
 
   };
 
@@ -160,6 +172,49 @@ class App extends Component {
     this.setState({newproject: {label:event.target.value, value: event.target.value}});
 
   };
+
+  handlereport = e => {
+    e.preventDefault();
+    console.log(this.state.selectedReport)
+    console.log(this.state.reports)
+
+    if (this.state.selectedOption == null) {
+      toast("Please choose a project")
+
+    } else {
+
+      if (this.state.selectedOption.value === "new") {
+        fetch('/api/report', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports})
+        }).then((response) => {
+          toast("DONE!")
+          this.setState({buttonState: 'success'})
+        });
+      } else {
+        fetch('/api/report', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({report:this.state.selectedReport.value, reportmethod:this.state.reports})
+        }).then((response) => {
+          toast("DONE!")
+          this.setState({buttonState: 'success'})
+        });
+      }
+    }
+  };
+
+  reportmethodChanged = (newFruits) => {
+    console.log(newFruits)
+    this.setState({
+      reports: newFruits
+    });
+  }
 
 
   render() {
@@ -433,18 +488,26 @@ class App extends Component {
                 >
                   <div style={boxStyle}>Report</div>
                   <div style={boxStyle}>
-                    <form onSubmit={this.selectreport}>
+                    <form onSubmit={this.handlereport}>
                       <div>
                         <Select
+                          value={this.state.selectedReport}
+                          onChange={this.handleChangeReport}
                           options={reportoptions}
                         />
 
                       </div>
-                      <input name="test" type="checkbox" value="1" />bismark
-                      <input name="test" type="checkbox" value="1" />bwameth
-                      <input name="test" type="checkbox" value="1" />BS_seek2
-                      <input name="test" type="checkbox" value="1" />bitmapperBS
-                      <input name="test" type="checkbox" value="1" />gemBS
+                      <CheckboxGroup
+                        name="reports"
+                        value={this.state.reports}
+                        onChange={this.reportmethodChanged}>
+
+                        <Checkbox value="bismarkreport"/> Bismark<br />
+                        <Checkbox value="bwareport"/> BWA<br />
+                        <Checkbox value="bs2report"/> BS2<br />
+                        <Checkbox value="bitmapperBSreport"/> BitmapperBS<br />
+                        <Checkbox value="gemBS"/> gemBS<br />
+                      </CheckboxGroup>
                       <br />
                       <div>
                         <button>choose</button>

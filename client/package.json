@@ -4,6 +4,7 @@
   "license": "MIT",
   "dependencies": {
     "react": "^16.8.6",
+    "react-checkbox-group": "^4.0.1",
     "react-d3-tree": "^1.12.3",
     "react-dom": "^16.8.6",
     "react-fileupload-progress": "^0.4.2",
