@@ -155,9 +155,9 @@ app.post('/api/handle', (req, res) => {
     case 'Bismark_extract':
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bismarkResult/test/test2_val_2_bismark_bt2_pe.bam > ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
       str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --CX ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/';
-      str += ' && '+'gunzip ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bedGraph.gz';
-      str += ' && '+'gunzip ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov.gz';
-      str += ' && ' + ' awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov > '+ directorystr + req.body.project + '/pipeline/bismarkResult/bismarkreport.bed';
+      str += ' && '+'gunzip -rf ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bedGraph.gz';
+      str += ' && '+'gunzip -rf ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov.gz';
+      str += ' && ' + ' awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov > '+ directorystr + req.body.project + '/pipeline/bismarkResult/bismarkreport.bed';
       break;
     case 'bwa_extract':
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bwaResult/test.sam > ' + directorystr+req.body.project+'/pipeline/bwaResult/test.filter.bam';
