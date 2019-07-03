@@ -26,6 +26,7 @@ const reportoptions = [
   { value: 'intersect', label: 'intersect plot' },
   { value: 'coverageplot', label: 'Coverage plot' },
   { value: 'annotationplot', label: 'Annotation plot' },
+  { value: 'methylationregionanalysis', label: 'Methylation Region Analysis' },
 ];
 
 class App extends Component {

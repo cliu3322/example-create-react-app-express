@@ -155,6 +155,9 @@ app.post('/api/handle', (req, res) => {
     case 'Bismark_extract':
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bismarkResult/test/test2_val_2_bismark_bt2_pe.bam > ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
       str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --CX ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/';
+      str += ' && '+'gunzip ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bedGraph.gz';
+      str += ' && '+'gunzip ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov.gz';
+      str += ' && ' + ' awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov > '+ directorystr + req.body.project + '/pipeline/bismarkResult/bismarkreport.bed';
       break;
     case 'bwa_extract':
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bwaResult/test.sam > ' + directorystr+req.body.project+'/pipeline/bwaResult/test.filter.bam';
@@ -291,11 +294,39 @@ app.post('/api/report', (req, res) => {
         str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam';
       }
 
+      if (req.body.reportmethod.includes('bitmapperBSreport')) {
+        fs.copyFileSync(directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam');
+        fs.copyFileSync(directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam.bai',  directorystr+req.body.project+'/pipeline/goleft/'+'bs2.bam.bai');
+        str += ' ' + directorystr+req.body.project+'/pipeline/goleft/'+'bitmapper.bam';
+      }
+
       break;
     case 'intersect':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('intersect')) {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/intersect');
       }
+      str = 'pwd';
+      if (req.body.reportmethod.includes('bismarkreport')) {
+        //fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
+        str = ' && ' + ' awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov > '+ directorystr + req.body.project + '/pipeline/intersect/bismarkreport.bed';
+      }
+
+      if (req.body.reportmethod.includes('bwareport')) {
+        //fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
+        str += ' && ' +'sed \'1d\' | awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/intersect/bwareport.bed';
+      }
+
+      if (req.body.reportmethod.includes('bs2report')) {
+        //fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
+        str += ' && ' +'sed \'1d\' | awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/intersect/bs2report.bed';
+      }
+
+      if (req.body.reportmethod.includes('bitmapperBSreport')) {
+        //fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
+        str += ' && ' +'sed \'1d\' | awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/intersect/bitmapperBSreport.bed';
+      }
+
+
       //str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
       break;
     case 'coverageplot':
