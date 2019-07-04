@@ -154,7 +154,7 @@ app.post('/api/handle', (req, res) => {
       break;
     case 'Bismark_extract':
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bismarkResult/test/test2_val_2_bismark_bt2_pe.bam > ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam';
-      str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --CX ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/';
+      str += ' && '+'bismark_methylation_extractor --bedGraph --gzip --zero_based ' + directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/';
       str += ' && '+'gunzip -rf ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bedGraph.gz';
       str += ' && '+'gunzip -rf ' + directorystr+req.body.project+'/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov.gz';
       str += ' && ' + ' awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov > '+ directorystr + req.body.project + '/pipeline/bismarkResult/bismarkreport.bed';
@@ -164,18 +164,21 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'picard -Xmx32G SortSam INPUT= ' + directorystr+req.body.project+'/pipeline/bwaResult/test.filter.bam OUTPUT=' + directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index ' + directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive/hg38.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam';
+      str += ' && ' +'sed \'1d\' | awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/bwaResult/bwareport.bed';
       break;
     case 'bsseek2_extract':
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/BSresult/test.bam > ' + directorystr+req.body.project+'/pipeline/BSresult/test.filter.bam';
       str += ' && '+'picard -Xmx32G SortSam INPUT= ' + directorystr+req.body.project+'/pipeline/BSresult/test.filter.bam OUTPUT=' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index ' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive//hg38_bs2/grch38_core_and_bs_controls.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam';
+      str += ' && ' +'sed \'1d\' | awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/BSresult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/BSresult/bs2report.bed';
       break;
     case 'bitmapperBS_extract':
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.bam > ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.filter.bam';
       str += ' && '+'picard -Xmx32G SortSam INPUT= ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.filter.bam OUTPUT=' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam';
+      str += ' && ' +'sed \'1d\' | awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bitmapperResult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/bitmapperResult/bitmapperBSreport.bed';
       break;
     case 'gemBS_extract':
       str = 'gemBS call';
@@ -308,12 +311,12 @@ app.post('/api/report', (req, res) => {
       str = 'pwd';
       if (req.body.reportmethod.includes('bismarkreport')) {
         //fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
-        str = ' && ' + ' awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov > '+ directorystr + req.body.project + '/pipeline/intersect/bismarkreport.bed';
+        str = ' && ' + ' awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bismarkResult/bismark_methylation_extractor/test.filter.bismark.cov > '+ directorystr + req.body.project + '/pipeline/intersect/bismarkreport.bed';
       }
 
       if (req.body.reportmethod.includes('bwareport')) {
         //fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/test.filter.bam',  directorystr+req.body.project+'/pipeline/goleft/'+'bismark.bam');
-        str += ' && ' +'sed \'1d\' | awk \'{print $1 "\t" $2 "\t" $3 "\t" $4/100 "\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/intersect/bwareport.bed';
+        str += ' && ' +'sed \'1d\' | awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraphh > '+ directorystr + req.body.project + '/pipeline/intersect/bwareport.bed';
       }
 
       if (req.body.reportmethod.includes('bs2report')) {
