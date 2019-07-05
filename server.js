@@ -375,7 +375,7 @@ app.post('/api/report', (req, res) => {
         }
       });
 
-      str = '"converageplot.bash"'
+      str = 'converageplot.bash'
       break;
     case 'annotationplot':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bismarkResult')) {
