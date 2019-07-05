@@ -308,7 +308,7 @@ app.post('/api/report', (req, res) => {
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('intersect')) {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/intersect');
       }
-      str = 'pwd';
+
       req.body.reportmethod.forEach((method, index) => {
           switch (method) {
             case 'bismarkreport':
@@ -325,7 +325,33 @@ app.post('/api/report', (req, res) => {
               break;
           }
       });
-      //str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
+
+      if (req.body.reportmethod.length == 2) {
+        str = 'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[0] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/' + req.body.reportmethod[1] + '.bed -wa -wb > '+directorystr+req.body.project+'/pipeline/intersect/intersect.bed';
+        str += ' && ' +'awk \'{print $4 "\\t" $9}\' '+directorystr+req.body.project+'/pipeline/intersect/intersect.bed'+' > '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed'
+        str += ' && ' +'sed "1i Sample2 Sample1" '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed > ' +directorystr+req.body.project+'/pipeline/intersect/correlation.txt'
+      } else if (req.body.reportmethod.length = 3) {
+        str = 'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[0] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/' + req.body.reportmethod[1] + '.bed -wa -wb > 1.bed';
+        str += ' && ' +'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[2] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/1.bed -wa -wb > intersect.bed';
+        str += ' && ' +'awk \'{print $4 "\\t" $9 "\\t" $14}\' '+directorystr+req.body.project+'/pipeline/intersect/intersect.bed'+' > '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed'
+        str += ' && ' +'sed "1i Sample3 Sample2 Sample1" '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed > ' +directorystr+req.body.project+'/pipeline/intersect/correlation.txt'
+      } else if (req.body.reportmethod.length = 4) {
+        str = 'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[0] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/' + req.body.reportmethod[1] + '.bed -wa -wb > 1.bed';
+        str += ' && ' +'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[2] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/1.bed -wa -wb > 2.bed';
+        str += ' && ' +'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[3] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/2.bed -wa -wb > intersect.bed';
+        str += ' && ' +'awk \'{print $4 "\\t" $9 "\\t" $14  "\\t" $19}\' '+directorystr+req.body.project+'/pipeline/intersect/intersect.bed'+' > '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed'
+        str += ' && ' +'sed "1i Sample4 Sample3 Sample2 Sample1" '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed > ' +directorystr+req.body.project+'/pipeline/intersect/correlation.txt'
+      } else if (req.body.reportmethod.length = 5) {
+        str = 'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[0] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/' + req.body.reportmethod[1] + '.bed -wa -wb > 1.bed';
+        str += ' && ' +'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[2] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/1.bed -wa -wb > 2.bed';
+        str += ' && ' +'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[3] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/2.bed -wa -wb > 3.bed';
+        str += ' && ' +'bedtools intersect -a '+directorystr+req.body.project+'/pipeline/intersect/'+req.body.reportmethod[4] + '.bed -b '+directorystr+req.body.project+'/pipeline/intersect/3.bed -wa -wb > intersect.bed';
+        str += ' && ' +'awk \'{print $4 "\\t" $9 "\\t" $14  "\\t" $19 "\\t" $24}\' '+directorystr+req.body.project+'/pipeline/intersect/intersect.bed'+' > '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed'
+        str += ' && ' +'sed "1i Sample5 Sample4 Sample3 Sample2 Sample1" '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed > ' +directorystr+req.body.project+'/pipeline/intersect/correlation.txt'
+      }
+      str += ' && ' +'python txt_to_npz.py '+directorystr+req.body.project+'/pipeline/intersect/correlation.txt'
+      str += ' && ' +'plotCorrelation -in '+directorystr+req.body.project+'/pipeline/intersect/correlation.txt.npz -c spearman -p heatmap -o '++directorystr+req.body.project+'/pipeline/intersect/correlation.pdf --plotNumbers'
+
       break;
     case 'coverageplot':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('coverageplot')) {
@@ -333,8 +359,22 @@ app.post('/api/report', (req, res) => {
       }
 
       req.body.reportmethod.forEach((method, index) => {
-          console.log(method)
+        switch (method) {
+          case 'bismarkreport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bwareport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bwaResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bs2report':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/BSresult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bitmapperBSreport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bitmapperResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+        }
       });
+
       //str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
       break;
     case 'annotationplot':
