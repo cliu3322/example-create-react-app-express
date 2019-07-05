@@ -350,7 +350,7 @@ app.post('/api/report', (req, res) => {
         str += ' && ' +'sed "1i Sample5 Sample4 Sample3 Sample2 Sample1" '+directorystr+req.body.project+'/pipeline/intersect/correlation.bed > ' +directorystr+req.body.project+'/pipeline/intersect/correlation.txt'
       }
       str += ' && ' +'python txt_to_npz.py '+directorystr+req.body.project+'/pipeline/intersect/correlation.txt'
-      str += ' && ' +'plotCorrelation -in '+directorystr+req.body.project+'/pipeline/intersect/correlation.txt.npz -c spearman -p heatmap -o '++directorystr+req.body.project+'/pipeline/intersect/correlation.pdf --plotNumbers'
+      str += ' && ' +'plotCorrelation -in '+directorystr+req.body.project+'/pipeline/intersect/correlation.txt.npz -c spearman -p heatmap -o '+directorystr+req.body.project+'/pipeline/intersect/correlation.pdf --plotNumbers'
 
       break;
     case 'coverageplot':
