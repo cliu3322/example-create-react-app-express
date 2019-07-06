@@ -377,13 +377,36 @@ app.post('/api/report', (req, res) => {
       });
 
       str = 'sh coverageplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/coverage__percentage_plot.R'
+      str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
+      str += ' && Rscript ./coverage__percentage_plot.R && cd -'
       break;
     case 'annotationplot':
-      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bismarkResult')) {
-        fs.mkdirSync(directorystr+req.body.project+'/pipeline/bismarkResult');
-        console.log(directorystr+req.body.project+'/pipeline/bismarkResult')
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes(req.body.report)) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/'+req.body.report);
+        fs.copyFileSync('tss.R',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/tss.R');
+        fs.copyFileSync('annotation.R',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/annotation.R');
       }
-      //str = 'bismark /datadrive -o ' + directorystr+req.body.project+'/pipeline/bismarkResult/test -2 ' + directorystr+req.body.project+'/pipeline/trim/test1_val_1.fq -1 ' + directorystr+req.body.project+'/pipeline/trim/test2_val_2.fq --parallel 4 -p 4 --score_min L,0,-0.6 --non_directional'
+
+      req.body.reportmethod.forEach((method, index) => {
+        switch (method) {
+          case 'bismarkreport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bwareport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bwaResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bs2report':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/BSresult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bitmapperBSreport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bitmapperResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+        }
+      });
+      str = 'FILES='+directorystr+req.body.project+'/pipeline/'+req.body.report+'/*.bed'
+      str = 'sh annotationplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/tss.R'
+      str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
+      str += ' && Rscript ./annotation.R && cd -'
       break;
 
     }
