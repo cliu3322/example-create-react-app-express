@@ -376,7 +376,7 @@ app.post('/api/report', (req, res) => {
         }
       });
 
-      str = 'sh converageplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/coverage__percentage_plot.R'
+      str = 'sh coverageplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/coverage__percentage_plot.R'
       break;
     case 'annotationplot':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bismarkResult')) {
