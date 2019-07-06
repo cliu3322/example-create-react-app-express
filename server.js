@@ -404,7 +404,7 @@ app.post('/api/report', (req, res) => {
         }
       });
       str =
-      str = 'sh annotationplot.bash && FILES='+directorystr+req.body.project+'/pipeline/'+req.body.report+'/*.bed && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/tss.R'
+      str = 'FILES='+directorystr+req.body.project+'/pipeline/'+req.body.report+'/*.bed && sh annotationplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/tss.R'
       str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
       str += ' && Rscript ./annotation.R && cd -'
       break;

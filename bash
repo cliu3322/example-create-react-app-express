@@ -1,5 +1,4 @@
-sh annotationplot.bash && Rscript ./tss.R && cd /datadrive/projects/project2/pipeline/annotationplot && Rscript ./annotation.R && cd -
-
+FILES=/datadrive/projects/project2/pipeline/annotationplot/*.bed && cd /datadrive/projects/project2/pipeline/annotationplot && Rscript ./tss.R && cd /datadrive/projects/project2/pipeline/annotationplot && Rscript ./annotation.R && cd -
 
 bedtools intersect -a /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed -b /home/eric_liu/pipeline/BWA/test.bed -wa -wb > /home/eric_liu/pipeline/intersect/1.bed
 bedtools intersect -a /home/eric_liu/pipeline/BSresult/test.bed -b /home/eric_liu/pipeline/intersect/1.bed -wa -wb > /home/eric_liu/pipeline/intersect/2.bed
