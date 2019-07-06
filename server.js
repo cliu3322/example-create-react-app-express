@@ -356,6 +356,7 @@ app.post('/api/report', (req, res) => {
     case 'coverageplot':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('coverageplot')) {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/coverageplot');
+        fs.copyFileSync('coverage__percentage_plot.R',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/coverage__percentage_plot.R');
       }
 
       req.body.reportmethod.forEach((method, index) => {
@@ -375,7 +376,7 @@ app.post('/api/report', (req, res) => {
         }
       });
 
-      str = 'converageplot.bash'
+      str = 'sh converageplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/coverage__percentage_plot.R'
       break;
     case 'annotationplot':
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes('bismarkResult')) {
