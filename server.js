@@ -412,8 +412,11 @@ app.post('/api/report', (req, res) => {
       if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes(req.body.report)) {
         fs.mkdirSync(directorystr+req.body.project+'/pipeline/'+req.body.report);
       }
-
+      var label = ''
+      var filelocation = ''
       req.body.reportmethod.forEach((method, index) => {
+        label += method +','
+        filelocation += directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed.txt '
         switch (method) {
           case 'bismarkreport':
             fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
@@ -430,8 +433,7 @@ app.post('/api/report', (req, res) => {
         }
       });
       str = 'sh methylationregionanalysis.bash \''+directorystr+req.body.project+'/pipeline/'+req.body.report + '\''
-      str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
-      str += ' && cd -'
+      str += ' && defiant -c 1 -p 0.01 -L '+label+' -i ' + filelocation
       break;
 
     }
