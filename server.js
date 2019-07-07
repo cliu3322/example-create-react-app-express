@@ -429,7 +429,7 @@ app.post('/api/report', (req, res) => {
             break;
         }
       });
-      str = 'FILES='+directorystr+req.body.project+'/pipeline/'+req.body.report+'/*.bed && sh methylationregionanalysis.bash'
+      str = 'sh methylationregionanalysis.bash'
       str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
       str += ' && cd -'
       break;
