@@ -403,10 +403,35 @@ app.post('/api/report', (req, res) => {
             break;
         }
       });
-      str =
       str = 'FILES='+directorystr+req.body.project+'/pipeline/'+req.body.report+'/*.bed && sh annotationplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/tss.R'
       str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
       str += ' && Rscript ./annotation.R && cd -'
+      break;
+
+    case 'methylationregionanalysis':
+      if(!getDirectories(directorystr+req.body.project+'/pipeline').map(x => x.replace(directorystr+req.body.project+'/pipeline/','')).includes(req.body.report)) {
+        fs.mkdirSync(directorystr+req.body.project+'/pipeline/'+req.body.report);
+      }
+
+      req.body.reportmethod.forEach((method, index) => {
+        switch (method) {
+          case 'bismarkreport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bismarkResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bwareport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bwaResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bs2report':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/BSresult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+          case 'bitmapperBSreport':
+            fs.copyFileSync(directorystr+req.body.project+'/pipeline/bitmapperResult/'+method+'.bed',  directorystr+req.body.project+'/pipeline/'+req.body.report+'/'+method+'.bed');
+            break;
+        }
+      });
+      str = 'FILES='+directorystr+req.body.project+'/pipeline/'+req.body.report+'/*.bed && sh methylationregionanalysis.bash'
+      str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
+      str += ' && cd -'
       break;
 
     }
