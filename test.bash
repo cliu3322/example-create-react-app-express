@@ -1,4 +1,4 @@
-FILES=$1/*.bed
+FILES=$1/*.js
 for f in $FILES
 do
 	echo "Processing $f files..."
