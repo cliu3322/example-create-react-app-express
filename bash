@@ -1,3 +1,6 @@
+	defiant -c 1 -p 0.01 -L bitmapperBSreport,bs2report,bwareport -i /datadrive/projects/project2/pipeline/methylationregionanalysis/bitmapperBSreport.bed.txt /datadrive/projects/project2/pipeline/methylationregionanalysis/bs2report.bed.txt /datadrive/projects/project2/pipeline/methylationregionanalysis/bwareport.bed.txt
+
+
 FILES=/datadrive/projects/project2/pipeline/annotationplot/*.bed && cd /datadrive/projects/project2/pipeline/annotationplot && Rscript ./tss.R && cd /datadrive/projects/project2/pipeline/annotationplot && Rscript ./annotation.R && cd -
 
 bedtools intersect -a /home/eric_liu/pipeline/test_direction_result/bismark_methylation_extractor/test.bismark.bed -b /home/eric_liu/pipeline/BWA/test.bed -wa -wb > /home/eric_liu/pipeline/intersect/1.bed
