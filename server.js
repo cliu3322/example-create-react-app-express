@@ -164,7 +164,7 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'picard -Xmx32G SortSam INPUT= ' + directorystr+req.body.project+'/pipeline/bwaResult/test.filter.bam OUTPUT=' + directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index ' + directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive/hg38.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/bwaResult/test.sort.bam';
-      str += ' && ' +'sed \'1d\' \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/bwaResult/bwareport.bed';
+      str += ' && ' +'sed \'1d\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/bwaResult/bwareport.bed';
       str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bwaResult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/bwaResult/bwareport.bed';
       break;
     case 'bsseek2_extract':
@@ -172,7 +172,7 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'picard -Xmx32G SortSam INPUT= ' + directorystr+req.body.project+'/pipeline/BSresult/test.filter.bam OUTPUT=' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index ' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive//hg38_bs2/grch38_core_and_bs_controls.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam';
-      str += ' && ' +'sed \'1d\' \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/BSresult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/BSresult/bs2report.bed';
+      str += ' && ' +'sed \'1d\' ' + directorystr + req.body.project + '/pipeline/BSresult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/BSresult/bs2report.bed';
       str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/BSresult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/BSresult/bs2report.bed';
       break;
     case 'bitmapperBS_extract':
@@ -180,7 +180,7 @@ app.post('/api/handle', (req, res) => {
       str += ' && '+'picard -Xmx32G SortSam INPUT= ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.filter.bam OUTPUT=' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam';
       str += ' && '+'MethylDackel extract /datadrive/hg38_bitmapper/grch38_core_and_bs_controls.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/bitmapperResult/test.sort.bam';
-      str += ' && ' +'sed \'1d\' \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bitmapperResult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/bitmapperResult/bitmapperBSreport.bed';
+      str += ' && ' +'sed \'1d\' ' + directorystr + req.body.project + '/pipeline/bitmapperResult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/bitmapperResult/bitmapperBSreport.bed';
       str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/bitmapperResult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/bitmapperResult/bitmapperBSreport.bed';
       break;
     case 'gemBS_extract':
