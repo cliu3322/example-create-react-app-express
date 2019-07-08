@@ -380,7 +380,7 @@ app.post('/api/report', (req, res) => {
         }
       });
 
-      str = 'sh coverageplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/coverage__percentage_plot.R'
+      str = 'sh coverageplot.bash \''+directorystr+req.body.project+'/pipeline/'+req.body.report + '\' && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/coverage__percentage_plot.R'
       str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
       str += ' && Rscript ./coverage__percentage_plot.R && cd -'
       break;
@@ -407,7 +407,7 @@ app.post('/api/report', (req, res) => {
             break;
         }
       });
-      str = 'FILES='+directorystr+req.body.project+'/pipeline/'+req.body.report+'/*.bed && sh annotationplot.bash && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/tss.R'
+      str = 'sh annotationplot.bash \''+directorystr+req.body.project+'/pipeline/'+req.body.report + '\' && Rscript '+directorystr+req.body.project+'/pipeline/'+req.body.report+'/tss.R'
       str += ' && cd '+directorystr+req.body.project+'/pipeline/'+req.body.report
       str += ' && Rscript ./annotation.R && cd -'
       break;

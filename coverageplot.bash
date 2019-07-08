@@ -1,6 +1,6 @@
 ## Coverage plot
 	## First step: prepare plot files
-FILES=/datadrive/projects/project2/pipeline/coverageplot/*.bed
+FILES=$1/*.bed
 for f in $FILES
 do
 	echo "Processing $f files..."

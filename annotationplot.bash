@@ -1,4 +1,4 @@
-FILES=/datadrive/projects/project2/pipeline/methylationregionanalysis/*.bed
+FILES=$1/*.bed
 for f in $FILES
 do
 echo "Processing $f files..."
