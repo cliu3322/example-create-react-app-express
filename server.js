@@ -106,6 +106,7 @@ app.post('/api/handle', (req, res) => {
   if(!getDirectories(directorystr+req.body.project).map(x => x.replace(directorystr+req.body.project+'/','')).includes('pipeline')) {
     fs.mkdirSync(directorystr+req.body.project+'/pipeline');
   }
+  console.log('body', req.body)
 
   switch(req.body.node) {
     case "trim":
@@ -171,7 +172,7 @@ app.post('/api/handle', (req, res) => {
       str = 'samtools view -@ 4 -b -h -F 0x04 -F 0x400 -F 512 -q 1 -f 0x02 ' + directorystr+req.body.project+'/pipeline/BSresult/test.bam > ' + directorystr+req.body.project+'/pipeline/BSresult/test.filter.bam';
       str += ' && '+'picard -Xmx32G SortSam INPUT= ' + directorystr+req.body.project+'/pipeline/BSresult/test.filter.bam OUTPUT=' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam SORT_ORDER=coordinate';
       str += ' && '+'samtools index ' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam';
-      str += ' && '+'MethylDackel extract /datadrive//hg38_bs2/grch38_core_and_bs_controls.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam';
+      str += ' && '+'MethylDackel extract /datadrive/hg38_bs2/grch38_core_and_bs_controls.fa --CHH --CHG ' + directorystr+req.body.project+'/pipeline/BSresult/test.sort.bam';
       str += ' && ' +'sed \'1d\' ' + directorystr + req.body.project + '/pipeline/BSresult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/BSresult/bs2report.bed';
       str += ' && ' +'awk \'{print $1 "\\t" $2 "\\t" $3 "\\t" $4/100 "\\t" $5+$6}\' ' + directorystr + req.body.project + '/pipeline/BSresult/test.sort_CpG.bedGraph > '+ directorystr + req.body.project + '/pipeline/BSresult/bs2report.bed';
       break;

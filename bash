@@ -1,3 +1,9 @@
+bedtools intersect -a /datadrive/projects/project2/pipeline/intersect/bwareport.bed -b /datadrive/projects/project2/pipeline/intersect/bs2report.bed -wa -wb > 1.bed && bedtools intersect -a /datadrive/projects/project2/pipeline/intersect/bitmapperBSreport.bed -b /datadrive/projects/project2/pipeline/intersect/1.bed -wa -wb > intersect.bed && awk '{print $4 "\t" $9 "\t" $14}' /datadrive/projects/project2/pipeline/intersect/intersect.bed > /datadrive/projects/project2/pipeline/intersect/correlation.bed && sed "1i Sample3 Sample2 Sample1" /datadrive/projects/project2/pipeline/intersect/correlation.bed > /datadrive/projects/project2/pipeline/intersect/correlation.txt && python txt_to_npz.py /datadrive/projects/project2/pipeline/intersect/correlation.txt && plotCorrelation -in /datadrive/projects/project2/pipeline/intersect/correlation.txt.npz -c spearman -p heatmap -o /datadrive/projects/project2/pipeline/intersect/correlation.pdf --plotNumbers
+
+
+
+sed '1d' /datadrive/projects/project2/pipeline/bwaResult/test.sort_CpG.bedGraph
+
 	defiant -c 1 -p 0.01 -L bitmapperBSreport,bs2report,bwareport -i /datadrive/projects/project2/pipeline/methylationregionanalysis/bitmapperBSreport.bed.txt /datadrive/projects/project2/pipeline/methylationregionanalysis/bs2report.bed.txt /datadrive/projects/project2/pipeline/methylationregionanalysis/bwareport.bed.txt
 
 
